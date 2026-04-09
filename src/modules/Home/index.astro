@@ -1,0 +1,48 @@
+---
+import { Signature } from "../../components/Brand/Signature";
+
+const navLinks = [
+  { href: "/inspiration", label: "Inspiration" },
+  { href: "/resume", label: "Resume" },
+  { href: "/archive", label: "Archive" },
+];
+---
+
+<div class="h-screen w-full flex flex-col justify-center items-center px-6 overflow-hidden">
+  <div class="w-full max-w-3xl flex flex-col items-center">
+    <!-- Immersive Brand Section -->
+    <div class="mb-32 w-full">
+      <Signature client:load />
+    </div>
+
+    <!-- Minimalist Global Navigation -->
+    <nav class="flex flex-col sm:flex-row gap-10 sm:gap-20 items-center justify-center">
+      {navLinks.map((link) => (
+        <a 
+          href={link.href}
+          class="text-accent hover:text-text-main transition-all duration-500 tracking-[0.3em] uppercase text-[11px] font-sans relative group"
+        >
+          {link.label}
+          <span class="absolute -inset-4 bg-white/40 opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-700 rounded-full -z-10 pointer-events-none"></span>
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <!-- Ambient Footer Details -->
+  <div class="absolute bottom-10 left-10 md:left-16 right-10 md:right-16 flex justify-between items-end pointer-events-none">
+    <div class="text-[9px] md:text-[10px] uppercase tracking-[0.5em] opacity-20 font-sans">
+      Whisper // Architecture
+    </div>
+    <div class="text-[9px] md:text-[10px] uppercase tracking-[0.5em] opacity-20 font-sans text-right max-w-[150px] leading-relaxed">
+      Silence is the ultimate luxury.
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Local over-ride for nav link soft glow if needed */
+  a {
+    transition: color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+</style>

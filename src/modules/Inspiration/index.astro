@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import { Canvas } from '../../components/Inspiration/Canvas';
+
+const inspirations = await getCollection('inspirations');
+---
+
+<div class="w-full min-h-[calc(100vh-250px)] flex flex-col items-center justify-center p-6 relative">
+  <!-- Dynamic Canvas Island -->
+  <Canvas inspirations={inspirations} client:load />
+
+  <!-- Interaction Hint -->
+  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none opacity-20 flex flex-col items-center gap-2">
+    <div class="text-[9px] uppercase tracking-[0.4em] font-sans">
+      Drag to explore // Click to focus
+    </div>
+    <div class="w-[1px] h-8 bg-black"></div>
+  </div>
+</div>

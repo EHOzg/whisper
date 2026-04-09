@@ -1,0 +1,28 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full py-16 px-6 flex flex-col items-center justify-center gap-8 mt-auto border-t border-text-main/5">
+  <div class="flex gap-12 items-center">
+    <a 
+      href="https://github.com/EHOzg" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="text-accent hover:text-text-main transition-all duration-500 uppercase text-[10px] tracking-[0.4em] font-sans relative group"
+    >
+      GitHub
+      <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-text-main/20 transition-all duration-500 group-hover:w-full"></span>
+    </a>
+    <a 
+      href="/rss.xml" 
+      class="text-accent hover:text-text-main transition-all duration-500 uppercase text-[10px] tracking-[0.4em] font-sans relative group"
+    >
+      RSS
+      <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-text-main/20 transition-all duration-500 group-hover:w-full"></span>
+    </a>
+  </div>
+  
+  <div class="text-[9px] uppercase tracking-[0.5em] opacity-20 font-sans select-none">
+    © {currentYear} Whisper // All shadows reserved.
+  </div>
+</footer>
