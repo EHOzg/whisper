@@ -1,0 +1,152 @@
+---
+import { render } from 'astro:content';
+import { GiscusComments } from '../../components/Comments/Giscus';
+import { getLangFromUrl } from '../../i18n/utils';
+
+interface Props {
+	post: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      pubDate: Date;
+      updatedDate?: Date;
+      tags?: string[];
+    };
+  };
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const lang = getLangFromUrl(Astro.url);
+---
+
+<article class="max-w-3xl mx-auto px-6 py-32 md:py-48">
+  <!-- Header -->
+  <header class="mb-24 space-y-8">
+    <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-accent font-sans whisper-fade-in" style="animation-delay: 100ms;">
+      <time datetime={post.data.pubDate.toISOString()}>
+        {post.data.pubDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
+      {post.data.tags && post.data.tags.length > 0 && (
+        <>
+          <span class="w-1 h-[1px] bg-accent/30"></span>
+          <div class="flex gap-4">
+            {post.data.tags.map(tag => (
+              <span>{tag}</span>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+
+    <h1 class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in" style="animation-delay: 300ms;">
+      {post.data.title}
+    </h1>
+
+    <p class="text-xl md:text-2xl text-accent font-serif italic max-w-2xl leading-relaxed whisper-fade-in" style="animation-delay: 500ms;">
+      {post.data.description}
+    </p>
+
+    <div class="w-16 h-[1px] bg-text-main/10 pt-8 whisper-fade-in" style="animation-delay: 700ms;"></div>
+  </header>
+
+  <!-- Content -->
+  <div class="prose-custom whisper-fade-in" style="animation-delay: 900ms;">
+    <Content />
+  </div>
+
+  <!-- Comments Section -->
+  <div class="whisper-fade-in" style="animation-delay: 1200ms;">
+    <GiscusComments client:only="react" />
+  </div>
+</article>
+
+<style is:global>
+  /* Book-like typography for the article content */
+  .prose-custom {
+    color: var(--text-main);
+    opacity: 0.9;
+    line-height: 1.8;
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 768px) {
+    .prose-custom {
+      font-size: 1.25rem;
+    }
+  }
+
+  .prose-custom p {
+    margin-bottom: 2rem;
+  }
+
+  .prose-custom h2 {
+    color: var(--text-main);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.875rem; /* 3xl */
+    line-height: 2.25rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.025em;
+  }
+
+  @media (min-width: 768px) {
+    .prose-custom h2 {
+      font-size: 2.25rem; /* 4xl */
+    }
+  }
+
+  .prose-custom h3 {
+    color: var(--text-main);
+    opacity: 0.8;
+    font-family: var(--font-serif);
+    font-size: 1.5rem; /* 2xl */
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  .prose-custom blockquote {
+    padding-left: 2rem;
+    border-left: 1px solid color-mix(in srgb, var(--text-main), transparent 90%);
+    font-style: italic;
+    color: var(--accent);
+    margin: 3rem 0;
+  }
+
+  .prose-custom ul, .prose-custom ol {
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .prose-custom li {
+    margin-bottom: 1rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+  }
+
+  .prose-custom a {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-color: color-mix(in srgb, var(--text-main), transparent 90%);
+    transition: all 0.5s var(--ease-whisper);
+  }
+
+  .prose-custom a:hover {
+    text-decoration-color: color-mix(in srgb, var(--text-main), transparent 70%);
+  }
+
+  .prose-custom hr {
+    margin: 4rem 0;
+    border: none;
+    height: 1px;
+    background-color: color-mix(in srgb, var(--text-main), transparent 95%);
+  }
+</style>

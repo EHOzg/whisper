@@ -2,6 +2,8 @@
 import "../styles/globals.css";
 import Footer from "../components/Navigation/Footer.astro";
 import Header from "../components/Navigation/Header.astro";
+import LanguageDetector from "../components/Navigation/LanguageDetector.astro";
+import { getLangFromUrl } from "../i18n/utils";
 
 interface Props {
 	title?: string;
@@ -16,10 +18,12 @@ const {
 	showFooter = true,
 	showHeader = true 
 } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -27,6 +31,9 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		
+		<LanguageDetector />
+
 		<!-- Preconnect to fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

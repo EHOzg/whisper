@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleDetail from '../../modules/Archive/ArticleDetail.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('archive');
+  // Handle posts with lang: zh
+	return posts.filter(post => post.data.lang === 'zh').map((post) => {
+    const slug = post.id.split('/').pop()?.replace(/\.(md|mdx)$/, '');
+    return {
+      params: { slug },
+      props: post,
+    };
+  });
+}
+
+const post = Astro.props;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <main>
+    <ArticleDetail post={post} />
+  </main>
+</BaseLayout>

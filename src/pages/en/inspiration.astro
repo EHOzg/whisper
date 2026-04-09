@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import InspirationModule from "../../modules/Inspiration/index.astro";
+
+const pageTitle = "Inspiration | Whisper";
+const pageDescription = "A zero-gravity canvas of fragmented thoughts.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <InspirationModule />
+  </main>
+</BaseLayout>

@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, useTranslatedPath } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+const allPosts = await getCollection('archive');
+const posts = allPosts
+  .filter(post => post.data.lang === lang)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<div class="max-w-4xl mx-auto px-6 py-32 md:py-48">
+  <div class="mb-24 space-y-6">
+    <h1 class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in" style="animation-delay: 100ms;">
+      {lang === 'zh' ? '存档.' : 'The Archive.'}
+    </h1>
+    <p class="text-accent text-sm md:text-base max-w-md leading-relaxed whisper-fade-in" style="animation-delay: 300ms;">
+      {lang === 'zh' 
+        ? '深度探索、琐碎思考与书写旅程的汇总库。' 
+        : 'A repository of deep dives, fragmented thoughts, and documented journeys.'}
+    </p>
+  </div>
+
+  <div class="space-y-24">
+    {posts.map((post, index) => {
+      // With global loader, slug is derived from the path
+      // if using lang subfolders, we need to extract the filename part
+      const slug = post.id.split('/').pop()?.replace(/\.(md|mdx)$/, '');
+      
+      return (
+        <article class="group whisper-fade-in" style={`animation-delay: ${500 + index * 100}ms;`}>
+          <a href={translatePath(`/archive/${slug}`)} class="block space-y-4">
+            <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.3em] text-accent font-sans">
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
+              </time>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <>
+                  <span class="w-1 h-[1px] bg-accent/30"></span>
+                  <div class="flex gap-4">
+                    {post.data.tags.map(tag => (
+                      <span>{tag}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            
+            <div class="space-y-4 transition-transform duration-700 group-hover:translate-x-2">
+              <h2 class="text-2xl md:text-4xl tracking-tight max-w-2xl leading-tight">
+                {post.data.title}
+              </h2>
+              <p class="text-accent text-sm md:text-base max-w-2xl leading-relaxed italic opacity-80">
+                {post.data.description}
+              </p>
+            </div>
+
+            <div class="pt-4 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+              <span class="text-[9px] uppercase tracking-[0.4em] text-text-main font-sans">
+                {lang === 'zh' ? '阅读全文' : 'Read full piece'}
+              </span>
+              <div class="w-12 h-[1px] bg-text-main/20"></div>
+            </div>
+          </a>
+        </article>
+      );
+    })}
+  </div>
+</div>

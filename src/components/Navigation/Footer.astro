@@ -1,28 +1,41 @@
 ---
+import { GithubIcon, Rss } from "../Common/Icons";
+import { getLangFromUrl, useTranslatedPath } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
 const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  { name: "GitHub", href: "https://github.com/EHOzg", icon: GithubIcon, external: true },
+  { name: "RSS", href: translatePath("/rss.xml"), icon: Rss, external: false },
+];
 ---
 
-<footer class="w-full py-16 px-6 flex flex-col items-center justify-center gap-8 mt-auto border-t border-text-main/5">
-  <div class="flex gap-12 items-center">
-    <a 
-      href="https://github.com/EHOzg" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="text-accent hover:text-text-main transition-all duration-500 uppercase text-[10px] tracking-[0.4em] font-sans relative group"
-    >
-      GitHub
-      <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-text-main/20 transition-all duration-500 group-hover:w-full"></span>
-    </a>
-    <a 
-      href="/rss.xml" 
-      class="text-accent hover:text-text-main transition-all duration-500 uppercase text-[10px] tracking-[0.4em] font-sans relative group"
-    >
-      RSS
-      <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-text-main/20 transition-all duration-500 group-hover:w-full"></span>
-    </a>
-  </div>
+<footer class="w-full py-16 px-6 flex flex-col items-center justify-center gap-10 mt-auto border-t border-text-main/5 bg-bg-base/30 backdrop-blur-sm">
+  <nav class="flex flex-wrap justify-center gap-x-12 gap-y-6 items-center">
+    {footerLinks.map((link) => (
+      <a 
+        href={link.href}
+        target={link.external ? "_blank" : undefined}
+        rel={link.external ? "noopener noreferrer" : undefined}
+        class="group flex items-center gap-3 text-accent hover:text-text-main transition-all duration-500 uppercase text-[9px] tracking-[0.3em] font-sans"
+      >
+        <div class="p-2 rounded-full bg-text-main/5 group-hover:bg-text-main/10 transition-all duration-500 border border-transparent group-hover:border-text-main/5">
+          <link.icon size={12} />
+        </div>
+        <span class="relative">
+          {link.name}
+          <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-text-main/20 transition-all duration-500 group-hover:w-full"></span>
+        </span>
+      </a>
+    ))}
+  </nav>
   
-  <div class="text-[9px] uppercase tracking-[0.5em] opacity-20 font-sans select-none">
-    © {currentYear} Whisper // All shadows reserved.
+  <div class="flex flex-col items-center gap-2">
+    <div class="text-[9px] uppercase tracking-[0.5em] opacity-20 font-sans select-none">
+      © {currentYear} Whisper // {lang === 'zh' ? '保留所有灵感阴影' : 'All shadows reserved.'}
+    </div>
+    <div class="w-8 h-[1px] bg-text-main/5"></div>
   </div>
 </footer>

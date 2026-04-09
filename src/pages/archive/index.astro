@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArchiveModule from '../../modules/Archive/index.astro';
+
+const pageTitle = "Archive | Whisper";
+const pageDescription = "A repository of deep dives, fragmented thoughts, and documented journeys.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <ArchiveModule />
+  </main>
+</BaseLayout>

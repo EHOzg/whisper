@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ResumeModule from "../../modules/Resume/index.astro";
+
+const pageTitle = "Resume | Whisper";
+const pageDescription = "A chronicle of intentional growth and craftsmanship.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <ResumeModule />
+  </main>
+</BaseLayout>

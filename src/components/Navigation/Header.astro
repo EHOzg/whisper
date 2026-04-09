@@ -1,18 +1,25 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from "../../i18n/utils";
+import { LanguageToggle } from "./LanguageToggle";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
 const pathname = new URL(Astro.request.url).pathname;
-const currentPath = pathname.replace(/\/$/, ""); // Remove trailing slash if present
+const currentPath = pathname.replace(/\/$/, "") || "/";
 
 const navLinks = [
-  { href: "/inspiration", label: "Inspiration" },
-  { href: "/resume", label: "Resume" },
-  { href: "/archive", label: "Archive" },
+  { href: "/inspiration", label: t('nav.inspiration') },
+  { href: "/resume", label: t('nav.resume') },
+  { href: "/archive", label: t('nav.archive') },
 ];
 ---
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-700 border-b border-text-main/5 bg-bg-base/60 backdrop-blur-xl">
   <div class="max-w-[1440px] mx-auto px-6 h-20 md:px-16 flex items-center justify-between">
     <!-- Brand Logo -->
-    <a href="/" class="group flex items-center gap-4">
+    <a href={translatePath('/')} class="group flex items-center gap-4">
       <div class="w-6 h-[1px] bg-text-main/10 group-hover:w-10 group-hover:bg-text-main/30 transition-all duration-700"></div>
       <span class="text-[10px] uppercase tracking-[0.6em] font-sans opacity-30 group-hover:opacity-80 transition-opacity duration-700">
         Whisper
@@ -22,10 +29,11 @@ const navLinks = [
     <!-- Navigation Links -->
     <nav class="hidden md:flex items-center gap-16">
       {navLinks.map((link) => {
-        const isActive = currentPath === link.href;
+        const localizedPath = translatePath(link.href);
+        const isActive = currentPath === localizedPath || (localizedPath === '/' && (currentPath === '' || currentPath === '/'));
         return (
           <a 
-            href={link.href}
+            href={localizedPath}
             class={`text-[9px] uppercase tracking-[0.4em] font-sans transition-all duration-700 relative group ${isActive ? 'text-text-main opacity-100' : 'text-accent/60 hover:text-text-main hover:opacity-100'}`}
           >
             {link.label}
@@ -33,6 +41,11 @@ const navLinks = [
           </a>
         )
       })}
+
+      <!-- Language Toggle -->
+      <div class="pl-8 border-l border-text-main/5 h-4 flex items-center">
+        <LanguageToggle client:load currentLang={lang} currentPath={currentPath} />
+      </div>
     </nav>
     
     <!-- Mobile Menu (Minimalist dots) -->
@@ -45,7 +58,6 @@ const navLinks = [
 
 <style>
   header {
-    /* Subtle noise texture override for glassmorphism */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-blend-mode: overlay;
   }
