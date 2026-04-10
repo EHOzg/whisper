@@ -99,6 +99,23 @@
       mix-blend-mode: soft-light;
     }
   }
+
+  /* Code Block Styling */
+  pre {
+    @apply my-8 p-6 rounded-2xl bg-bg-base/50 border border-border-muted overflow-x-auto shadow-sm;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    @apply text-[0.875rem] px-1.5 py-0.5 rounded bg-accent/5 text-accent;
+  }
+
+  pre code {
+    @apply p-0 bg-transparent text-text-main;
+  }
 }
 
 @layer components {

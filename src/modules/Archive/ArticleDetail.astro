@@ -1,32 +1,33 @@
 ---
-import { render, type CollectionEntry } from 'astro:content';
-import { GiscusComments } from '../../components/Comments/Giscus';
-const { post } = Astro.props;
-const { Content } = await render(post);
+import { render, type CollectionEntry } from 'astro:content'
+import { GiscusComments } from '../../components/Comments/Giscus'
+const { post } = Astro.props
+const { Content } = await render(post)
 
 // Structured Data (JSON-LD)
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": post.data.title,
-  "description": post.data.description,
-  "datePublished": post.data.pubDate.toISOString(),
-  "dateModified": post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString(),
-  "author": {
-    "@type": "Person",
-    "name": "EHO",
-    "url": "https://whisper-eho.netlify.app/resume"
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified:
+    post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'EHO',
+    url: 'https://whisper-eho.netlify.app/resume',
   },
-  "image": new URL("/assets/og-image.jpg", Astro.site).toString(), // Fallback or post image
-  "publisher": {
-    "@type": "Organization",
-    "name": "Whisper",
-    "logo": {
-      "@type": "ImageObject",
-      "url": new URL("/favicon.svg", Astro.site).toString()
-    }
-  }
-};
+  image: new URL('/assets/og-image.jpg', Astro.site).toString(), // Fallback or post image
+  publisher: {
+    '@type': 'Organization',
+    name: 'Whisper',
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/favicon.svg', Astro.site).toString(),
+    },
+  },
+}
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -34,35 +35,48 @@ const jsonLd = {
 <article class="max-w-3xl mx-auto px-6 py-32 md:py-48">
   <!-- Header -->
   <header class="mb-24 space-y-8">
-    <div class="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-accent font-sans whisper-fade-in" style="animation-delay: 100ms;">
+    <div
+      class="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-accent font-sans whisper-fade-in"
+      style="animation-delay: 100ms;">
       <time datetime={post.data.pubDate.toISOString()}>
-        {post.data.pubDate.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
+        {
+          post.data.pubDate.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        }
       </time>
-      {post.data.tags && post.data.tags.length > 0 && (
-        <>
-          <span class="w-1 h-[1px] bg-accent/30"></span>
-          <div class="flex gap-4">
-            {post.data.tags.map((tag: string) => (
-              <span>{tag}</span>
-            ))}
-          </div>
-        </>
-      )}
+      {
+        post.data.tags && post.data.tags.length > 0 && (
+          <>
+            <span class="w-1 h-[1px] bg-accent/30" />
+            <div class="flex gap-4">
+              {post.data.tags.map((tag: string) => (
+                <span>{tag}</span>
+              ))}
+            </div>
+          </>
+        )
+      }
     </div>
 
-    <h1 class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in" style="animation-delay: 300ms;">
+    <h1
+      class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in"
+      style="animation-delay: 300ms;">
       {post.data.title}
     </h1>
 
-    <p class="text-xl md:text-2xl text-accent font-serif italic max-w-2xl leading-relaxed whisper-fade-in" style="animation-delay: 500ms;">
+    <p
+      class="text-xl md:text-2xl text-accent font-serif italic max-w-2xl leading-relaxed whisper-fade-in"
+      style="animation-delay: 500ms;">
       {post.data.description}
     </p>
 
-    <div class="w-16 h-[1px] bg-text-main/10 pt-8 whisper-fade-in" style="animation-delay: 700ms;"></div>
+    <div
+      class="w-16 h-[1px] bg-text-main/10 pt-8 whisper-fade-in"
+      style="animation-delay: 700ms;">
+    </div>
   </header>
 
   <!-- Content -->
@@ -75,6 +89,62 @@ const jsonLd = {
     <GiscusComments client:only="react" />
   </div>
 </article>
+
+<!-- Immersive Reader UI Elements -->
+<div
+  id="reading-pulse"
+  class="fixed bottom-0 left-0 w-full h-1 bg-accent/20 scale-x-0 origin-left transition-transform duration-300 z-[100]">
+  <div class="absolute top-[-20px] left-0 w-full h-20 bg-accent/5 blur-2xl">
+  </div>
+</div>
+
+<div
+  id="reader-glow"
+  class="fixed pointer-events-none w-64 h-64 rounded-full bg-accent/5 blur-[100px] z-[5] opacity-0 transition-opacity duration-1000">
+</div>
+
+<script>
+  // Immersive Reader Logic
+  const pulse = document.getElementById('reading-pulse')
+  const glow = document.getElementById('reader-glow')
+  const body = document.body
+
+  // 1. Reading Progress & Atmosphere Shift
+  window.addEventListener('scroll', () => {
+    const totalHeight =
+      document.documentElement.scrollHeight - window.innerHeight
+    const progress = window.scrollY / totalHeight
+
+    if (pulse) {
+      pulse.style.transform = `scaleX(${progress})`
+    }
+
+    // Dynamic Atmosphere: Shift toward warmer parchment as we read deeper
+    // bg-base Linen: 45 40% 98%
+    const warmth = 45
+    const saturation = 40 - progress * 10
+    const lightness = 98 - progress * 4
+
+    document.documentElement.style.setProperty(
+      '--bg-base',
+      `${warmth} ${saturation}% ${lightness}%`,
+    )
+  })
+
+  // 2. Custom Glow Cursor
+  window.addEventListener('mousemove', (e) => {
+    if (glow) {
+      glow.style.left = `${e.clientX - 128}px`
+      glow.style.top = `${e.clientY - 128}px`
+      glow.style.opacity = '1'
+    }
+  })
+
+  // Initial opacity reveal
+  setTimeout(() => {
+    if (glow) glow.style.opacity = '0.4'
+  }, 1000)
+</script>
 
 <style is:global>
   /* Book-like typography for the article content */
@@ -131,7 +201,8 @@ const jsonLd = {
     margin: 3rem 0;
   }
 
-  .prose-custom ul, .prose-custom ol {
+  .prose-custom ul,
+  .prose-custom ol {
     margin-bottom: 2rem;
     padding-left: 1.5rem;
   }
@@ -145,12 +216,20 @@ const jsonLd = {
   .prose-custom a {
     text-decoration: underline;
     text-underline-offset: 8px;
-    text-decoration-color: color-mix(in srgb, var(--text-main), transparent 90%);
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--text-main),
+      transparent 90%
+    );
     transition: all 0.5s var(--ease-whisper);
   }
 
   .prose-custom a:hover {
-    text-decoration-color: color-mix(in srgb, var(--text-main), transparent 70%);
+    text-decoration-color: color-mix(
+      in srgb,
+      var(--text-main),
+      transparent 70%
+    );
   }
 
   .prose-custom hr {
@@ -158,5 +237,50 @@ const jsonLd = {
     border: none;
     height: 1px;
     background-color: color-mix(in srgb, var(--text-main), transparent 95%);
+  }
+
+  /* Code Blocks */
+  .prose-custom pre {
+    margin: 3rem 0;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background-color: color-mix(in srgb, var(--bg-base), var(--text-main) 5%);
+    border: 1px solid color-mix(in srgb, var(--text-main), transparent 92%);
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    box-shadow: inset 0 2px 4px
+      color-mix(in srgb, var(--text-main), transparent 98%);
+  }
+
+  @media (max-width: 768px) {
+    .prose-custom pre {
+      padding: 1.5rem;
+      margin: 2rem -1.5rem;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+  }
+
+  .prose-custom code {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
+    font-size: 0.85em;
+    background: color-mix(in srgb, var(--accent), transparent 92%);
+    color: var(--accent);
+    padding: 0.2em 0.4em;
+    border-radius: 0.4em;
+  }
+
+  .prose-custom pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
   }
 </style>

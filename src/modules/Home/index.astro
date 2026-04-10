@@ -1,9 +1,17 @@
 ---
 import { Signature } from "../../components/Brand/Signature";
+import { AmbientFragments } from "../../components/Home/AmbientFragments";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection('archive');
+const fragments = posts.map(p => p.data.title).slice(0, 8);
 ---
 
-<div class="h-[calc(100dvh-80px)] w-full flex items-center justify-center px-6 overflow-hidden">
-  <div class="w-full max-w-5xl flex flex-col items-center">
+<div class="relative h-[calc(100dvh-80px)] w-full flex items-center justify-center px-6 overflow-hidden">
+  <!-- Ambient Layer -->
+  <AmbientFragments client:load fragments={fragments} />
+
+  <div class="w-full max-w-5xl flex flex-col items-center relative z-10">
     <!-- Immersive Brand Section -->
     <div class="w-full">
       <Signature client:load />

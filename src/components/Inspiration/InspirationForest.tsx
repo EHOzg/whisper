@@ -1,7 +1,9 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Float } from '@react-three/drei';
+import { OrbitControls, ContactShadows, Sparkles } from '@react-three/drei';
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { WhisperTree } from './WhisperTree';
+import { WhisperFlower } from './WhisperFlower';
 
 interface InspirationForestProps {
   inspirations: Array<{
@@ -15,55 +17,102 @@ interface InspirationForestProps {
 }
 
 const ForestScene: React.FC<InspirationForestProps> = ({ inspirations }) => {
+  // Generate orbital positions for flowers in the canopy
+  const flowers = useMemo(() => {
+    return inspirations.map((inspiration, index) => {
+      // Create a shell distribution focused on the upper half
+      const phi = Math.acos(-1 + (2 * index) / inspirations.length);
+      const theta = Math.sqrt(inspirations.length * Math.PI) * phi;
+      
+      const radius = 18 + Math.random() * 12;
+      const x = radius * Math.cos(theta) * Math.sin(phi);
+      const y = 14 + Math.random() * 15; // Higher up in the branches
+      const z = radius * Math.cos(phi);
+
+      return {
+        inspiration,
+        position: [x, y, z] as [number, number, number]
+      };
+    });
+  }, [inspirations]);
+
   return (
     <>
-      <color attach="background" args={['#F7F5F0']} /> {/* Linen Background */}
-      <fog attach="fog" args={['#F7F5F0', 50, 150]} />
+      <color attach="background" args={['#F7F5F0']} />
+      <fog attach="fog" args={['#F7F5F0', 50, 180]} />
       
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
-      <pointLight position={[-10, 15, -10]} intensity={0.5} color="#8C7861" />
-
+      <ambientLight intensity={0.15} />
+      <directionalLight position={[10, 50, 10]} intensity={1.2} castShadow />
+      <pointLight position={[0, 15, 0]} intensity={3} color="#FFD700" />
+      
       <Suspense fallback={null}>
-        {inspirations.map((inspiration, index) => {
-          // Arrange trees in a natural-looking circular/grid pattern
-          const angle = (index / inspirations.length) * Math.PI * 2;
-          const radius = 20 + Math.random() * 30;
-          const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 10;
-          const z = Math.sin(angle) * radius + (Math.random() - 0.5) * 10;
-          
-          return (
-            <WhisperTree 
-              key={inspiration.id} 
-              inspiration={inspiration} 
-              position={[x, 0, z]} 
-            />
-          );
-        })}
+        {/* The World Tree (Centerpiece) */}
+        <WhisperTree />
+
+        {/* Flowering Inspirations */}
+        {flowers.map((f) => (
+          <WhisperFlower 
+            key={f.inspiration.id} 
+            inspiration={f.inspiration} 
+            position={f.position} 
+          />
+        ))}
+
+        {/* Ambient Particles */}
+        <Sparkles 
+           count={120} 
+           scale={70} 
+           size={1} 
+           speed={0.3} 
+           opacity={0.15} 
+           color="#1A1A1A" 
+        />
+        <Sparkles 
+           count={80} 
+           scale={50} 
+           size={2.5} 
+           speed={0.5} 
+           opacity={0.25} 
+           color="#FFD700" 
+        />
         
-        {/* Ground Plane */}
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
-          <planeGeometry args={[500, 500]} />
-          <meshStandardMaterial color="#F0EEE6" roughness={1} />
+        {/* Sacred Altar */}
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, 0]} receiveShadow>
+          <circleGeometry args={[50, 64]} />
+          <meshStandardMaterial 
+            color="#F0EEE6" 
+            roughness={0.9} 
+          />
         </mesh>
 
         <ContactShadows 
-            opacity={0.4} 
-            scale={100} 
-            blur={2.5} 
-            far={10} 
-            resolution={256} 
+            opacity={0.35} 
+            scale={120} 
+            blur={4.5} 
+            far={25} 
+            resolution={512} 
             color="#1A1A1A" 
         />
+
+        {/* Post-Processing Effects */}
+        <EffectComposer disableNormalPass>
+          <Bloom 
+             luminanceThreshold={1.0} 
+             mipmapBlur 
+             intensity={1.0} 
+             radius={0.4}
+          />
+        </EffectComposer>
       </Suspense>
 
       <OrbitControls 
         enablePan={false} 
-        minDistance={30} 
-        maxDistance={120} 
-        maxPolarAngle={Math.PI / 2.1} // Prevent going below ground
+        minDistance={50} 
+        maxDistance={140} 
+        maxPolarAngle={Math.PI / 2.1} 
         autoRotate 
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={0.2}
+        target={[0, 15, 0]}
       />
     </>
   );
@@ -72,7 +121,7 @@ const ForestScene: React.FC<InspirationForestProps> = ({ inspirations }) => {
 export const InspirationForest: React.FC<InspirationForestProps> = ({ inspirations }) => {
   return (
     <div className="w-full h-screen bg-bg-base/50">
-      <Canvas shadows camera={{ position: [60, 40, 60], fov: 45 }}>
+      <Canvas shadows camera={{ position: [90, 45, 90], fov: 38 }}>
         <ForestScene inspirations={inspirations} />
       </Canvas>
 

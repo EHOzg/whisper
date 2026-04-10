@@ -4,100 +4,67 @@ import { Tree } from '@dgreenheck/ez-tree';
 import { Html } from '@react-three/drei';
 
 interface WhisperTreeProps {
-  inspiration: {
-    id: string;
-    data: {
-      type: 'thought' | 'snippet' | 'quote';
-      content: string;
-      author?: string;
-    }
-  };
-  position: [number, number, number];
+  position?: [number, number, number];
 }
 
-export const WhisperTree: React.FC<WhisperTreeProps> = ({ inspiration, position }) => {
-  const [hovered, setHovered] = useState(false);
-  const { type, content } = inspiration.data;
-
-  // Procedural Tree Generation Logic
+export const WhisperTree: React.FC<WhisperTreeProps> = ({ position = [0, 0, 0] }) => {
+  // World Tree Generation
   const treeGroup = useMemo(() => {
     const tree = new Tree();
     
-    // Deterministic seed based on inspiration ID
-    const seed = inspiration.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    tree.options.seed = seed;
+    // Fixed seed for the master tree
+    tree.options.seed = 42;
 
-    // Define species attributes based on inspiration type
-    if (type === 'quote') {
-      // Cypress-like (Tall, wisdom)
-      tree.options.branch.length[0] = 15 + (content.length % 5);
-      tree.options.branch.radius[0] = 0.5;
-      tree.options.branch.levels = 3;
-      tree.options.branch.children[0] = 10;
-    } else if (type === 'thought') {
-      // Oak-like (Spreading, reflection)
-      tree.options.branch.length[0] = 10;
-      tree.options.branch.radius[0] = 1.2;
-      tree.options.branch.levels = 4;
-      tree.options.branch.children[0] = 15;
-    } else {
-      // Shrub-like (Dense, spark)
-      tree.options.branch.length[0] = 5;
-      tree.options.branch.radius[0] = 0.3;
-      tree.options.branch.levels = 2;
-      tree.options.branch.children[0] = 20;
-    }
+    // Massive World Tree Attributes
+    tree.options.branch.length[0] = 25;
+    tree.options.branch.radius[0] = 3.5;
+    tree.options.branch.levels = 5;
+    tree.options.branch.children[0] = 20;
+    
+    // Lush Autumn Canopy
+    tree.options.leaves.count = 350;
+    tree.options.leaves.size = 2.0;
+    tree.options.leaves.sizeVariance = 0.8;
+    tree.options.leaves.alphaTest = 0;
 
-    // Generate the tree geometry
     tree.generate();
     
-    // Post-generation styling to match Whisper theme (Ink/Linen)
-    // EZ-Tree creates meshes for 'trunk' and 'leaves'
-    // We can traverse the generated group to apply materials
+    // Aesthetic Palette
+    const autumnColors = ['#A13D2D', '#D48C45', '#C29B40', '#8A4A31', '#6B3E26'];
+    
     tree.traverse((child: any) => {
         if (child.isMesh) {
             if (child.name.includes('leaves')) {
-                child.material = new THREE.MeshStandardMaterial({
-                    color: hovered ? '#8C7861' : '#1A1A1A', // Accent vs Ink
-                    roughness: 0.8,
+                // Determine color based on position for a natural gradient
+                const y = child.position?.y || 0;
+                const colorIdx = Math.floor(Math.abs(y * 10)) % autumnColors.length;
+                
+                child.material = new THREE.MeshPhysicalMaterial({
+                    color: autumnColors[colorIdx],
+                    roughness: 0.5,
+                    metalness: 0.1,
                     transparent: true,
-                    opacity: 0.9
+                    opacity: 0.9,
+                    side: THREE.DoubleSide,
+                    transmission: 0.1,
+                    thickness: 1.0,
                 });
             } else {
                 child.material = new THREE.MeshStandardMaterial({
-                    color: '#2A2A2A',
-                    roughness: 0.9
+                    color: '#1A0E06', // Deep ancient bark
+                    roughness: 1.0,
+                    metalness: 0.05
                 });
             }
         }
     });
 
     return tree;
-  }, [inspiration.id, type, content.length, hovered]);
+  }, []);
 
   return (
     <group position={position}>
-      <primitive 
-        object={treeGroup} 
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        scale={hovered ? 1.05 : 1}
-      />
-      
-      {/* Dynamic Text "Whisper" revealed on hover */}
-      {hovered && (
-        <Html position={[0, treeGroup.options.branch.length[0] + 2, 0]} center distanceFactor={15}>
-          <div className="bg-bg-base/80 backdrop-blur-md px-6 py-4 rounded-xl border border-accent/20 shadow-2xl max-w-xs animate-in fade-in zoom-in duration-500">
-            <p className="text-xs uppercase tracking-widest text-accent mb-2 opacity-50">{type}</p>
-            <p className="text-sm font-serif italic leading-relaxed text-text-main">
-              {content}
-            </p>
-            {inspiration.data.author && (
-              <p className="text-[10px] mt-4 opacity-40 text-right">— {inspiration.data.author}</p>
-            )}
-          </div>
-        </Html>
-      )}
+      <primitive object={treeGroup} />
     </group>
   );
 };

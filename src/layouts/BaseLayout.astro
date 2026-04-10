@@ -4,6 +4,8 @@ import Footer from "../components/Navigation/Footer.astro";
 import Header from "../components/Navigation/Header.astro";
 import SEO from "../components/Common/SEO.astro";
 import { FortnightPlayer } from "../components/Common/FortnightPlayer";
+import { CommandConsole } from "../components/Navigation/CommandConsole";
+import { getCollection } from "astro:content";
 
 interface Props {
 	title?: string;
@@ -22,6 +24,36 @@ const {
 	showFooter = true,
 	showHeader = true 
 } = Astro.props;
+
+// Fetch and unify search data
+const archiveEntries = await getCollection('archive');
+const kbEntries = await getCollection('kb');
+const inspirationEntries = await getCollection('inspirations');
+
+const searchData = [
+  ...archiveEntries.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    url: `/archive/${e.id.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`,
+    type: 'archive' as const
+  })),
+  ...kbEntries.map(e => ({
+    id: e.id,
+    title: e.data.title,
+    description: e.data.description,
+    url: `/kb/${e.id.split('/').pop()?.replace(/\.(md|mdx)$/, '')}`,
+    type: 'kb' as const,
+    category: e.data.category
+  })),
+  ...inspirationEntries.map(e => ({
+    id: e.id,
+    title: '启发碎片',
+    description: e.data.content || '',
+    url: '/inspiration',
+    type: 'inspiration' as const
+  }))
+];
 ---
 
 <!doctype html>
@@ -46,7 +78,7 @@ const {
 			<slot />
 		</main>
 		{showFooter && <Footer />}
-
+		<CommandConsole client:only="react" data={searchData} />
 		<FortnightPlayer client:load />
 	</body>
 </html>
