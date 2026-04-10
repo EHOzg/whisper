@@ -16,12 +16,12 @@ const navLinks = [
 ];
 ---
 
-<header class="fixed top-0 left-0 w-full z-50 transition-all duration-700 border-b border-text-main/5 bg-bg-base/60 backdrop-blur-xl">
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-700 border-b border-border-muted bg-bg-base/60 backdrop-blur-xl">
   <div class="max-w-[1440px] mx-auto px-6 h-20 md:px-16 flex items-center justify-between">
     <!-- Brand Logo -->
     <a href={translatePath('/')} class="group flex items-center gap-4">
-      <div class="w-6 h-[1px] bg-text-main/10 group-hover:w-10 group-hover:bg-text-main/30 transition-all duration-700"></div>
-      <span class="text-[10px] uppercase tracking-[0.6em] font-sans opacity-30 group-hover:opacity-80 transition-opacity duration-700">
+      <div class="w-6 h-[1px] bg-accent/20 group-hover:w-10 group-hover:bg-accent/60 transition-all duration-700"></div>
+      <span class="text-[10px] uppercase tracking-[0.6em] font-sans opacity-40 group-hover:opacity-100 group-hover:text-accent transition-all duration-700">
         Whisper
       </span>
     </a>
@@ -34,16 +34,16 @@ const navLinks = [
         return (
           <a 
             href={localizedPath}
-            class={`text-[9px] uppercase tracking-[0.4em] font-sans transition-all duration-700 relative group ${isActive ? 'text-text-main opacity-100' : 'text-accent/60 hover:text-text-main hover:opacity-100'}`}
+            class={`text-[9px] uppercase tracking-[0.4em] font-sans transition-all duration-700 relative group ${isActive ? 'text-accent opacity-100' : 'text-text-main/60 hover:text-accent hover:opacity-100'}`}
           >
             {link.label}
-            <span class={`absolute -bottom-2 left-0 h-[1px] bg-text-main/10 transition-all duration-700 ${isActive ? 'w-full bg-text-main/20' : 'w-0 group-hover:w-full group-hover:bg-text-main/20'}`}></span>
+            <span class={`absolute -bottom-2 left-0 h-[1px] transition-all duration-700 ${isActive ? 'w-full bg-accent/30' : 'w-0 group-hover:w-full group-hover:bg-accent/30'}`}></span>
           </a>
         )
       })}
 
       <!-- Language Toggle -->
-      <div class="pl-8 border-l border-text-main/5 h-4 flex items-center">
+      <div class="pl-8 border-l border-border-muted h-4 flex items-center">
         <LanguageToggle client:load currentLang={lang} currentPath={currentPath} />
       </div>
     </nav>
@@ -55,10 +55,3 @@ const navLinks = [
     </button>
   </div>
 </header>
-
-<style>
-  header {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-blend-mode: overlay;
-  }
-</style>

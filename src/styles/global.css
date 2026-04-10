@@ -1,1 +1,122 @@
 @import "tailwindcss";
+
+@layer base {
+  @font-face {
+    font-family: 'Playfair Display';
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+  }
+}
+
+:root {
+  /* Light Theme - Whisper Pure */
+  --bg-base: 0 0% 99%;
+  --text-main: 220 15% 10%;
+  --accent-primary: 210 20% 45%;    /* Whisper Blue - Muted & Sophisticated */
+  --accent-secondary: 35 25% 60%;   /* Ethereal Gold - Warm Highlight */
+  --whisper-glow: 210 20% 95%;
+  --border-muted: 220 10% 90%;
+  
+  /* Motion Constants */
+  --ease-whisper: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-micro: 300ms;
+  --duration-page: 1200ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Theme - Nocturnal */
+    --bg-base: 220 20% 4%;
+    --text-main: 220 10% 90%;
+    --accent-primary: 210 30% 65%;
+    --accent-secondary: 35 20% 50%;
+    --whisper-glow: 220 20% 12%;
+    --border-muted: 220 15% 15%;
+  }
+}
+
+@theme {
+  --color-bg-base: hsl(var(--bg-base));
+  --color-text-main: hsl(var(--text-main));
+  --color-accent: hsl(var(--accent-primary));
+  --color-accent-gold: hsl(var(--accent-secondary));
+  --color-whisper-glow: hsl(var(--whisper-glow));
+  --color-border-muted: hsl(var(--border-muted));
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  
+  --ease-whisper: var(--ease-whisper);
+}
+
+@layer base {
+  html {
+    background-color: hsl(var(--bg-base));
+    color: hsl(var(--text-main));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.8s var(--ease-whisper), color 0.8s var(--ease-whisper);
+  }
+
+  body {
+    @apply min-h-screen relative overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif font-medium tracking-tight;
+  }
+
+  ::selection {
+    background-color: hsla(var(--accent-primary), 0.15);
+    color: inherit;
+  }
+
+  /* Texture Pattern Overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 50;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    filter: contrast(120%) brightness(100%);
+    mix-blend-mode: multiply;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body::after {
+      opacity: 0.05;
+      mix-blend-mode: soft-light;
+    }
+  }
+}
+
+@layer components {
+  .whisper-fade-in {
+    animation: whisperFadeIn var(--duration-page) var(--ease-whisper) forwards;
+  }
+
+  .whisper-glass {
+    @apply bg-bg-base/60 backdrop-blur-xl border border-border-muted shadow-sm;
+  }
+
+  @keyframes whisperFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

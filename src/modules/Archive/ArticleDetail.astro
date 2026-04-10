@@ -1,19 +1,10 @@
 ---
-import { render } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import { GiscusComments } from '../../components/Comments/Giscus';
 import { getLangFromUrl } from '../../i18n/utils';
 
 interface Props {
-	post: {
-    id: string;
-    data: {
-      title: string;
-      description: string;
-      pubDate: Date;
-      updatedDate?: Date;
-      tags?: string[];
-    };
-  };
+	post: CollectionEntry<'archive'>;
 }
 
 const { post } = Astro.props;
