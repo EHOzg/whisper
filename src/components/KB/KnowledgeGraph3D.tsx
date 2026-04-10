@@ -9,7 +9,7 @@ interface KnowledgeGraph3DProps {
 }
 
 export const KnowledgeGraph3D: React.FC<KnowledgeGraph3DProps> = ({ data }) => {
-  const fgRef = useRef<any>();
+  const fgRef = useRef<any>(null);
 
   // 1. Post-Processing Setup (Bloom)
   useEffect(() => {

@@ -20,17 +20,19 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
   height = "auto",
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
-  const handleInteractionStart = () => {
-    setIsPlaying(true);
-    videoRef.current?.play();
+  const startPlayback = () => {
+    setIsInteracting(true);
+    videoRef.current?.play().catch(() => {
+        // Handle potential autoplay block if interaction didn't register
+    });
   };
 
-  const handleInteractionEnd = () => {
-    setIsPlaying(false);
-    setIsVideoReady(false);
+  const stopPlayback = () => {
+    setIsInteracting(false);
+    setIsVideoPlaying(false);
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -39,41 +41,49 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
 
   return (
     <div 
-      className={`relative rounded-lg overflow-hidden cursor-pointer group select-none shadow-sm hover:shadow-xl transition-all duration-700 ${className}`}
-      onMouseEnter={handleInteractionStart}
-      onMouseLeave={handleInteractionEnd}
-      onTouchStart={handleInteractionStart}
-      onTouchEnd={handleInteractionEnd}
+      className={`relative rounded-3xl overflow-hidden cursor-pointer group select-none shadow-sm hover:shadow-2xl transition-all duration-1000 ease-whisper ${className}`}
+      onMouseEnter={startPlayback}
+      onMouseLeave={stopPlayback}
+      onTouchStart={startPlayback}
+      onTouchEnd={stopPlayback}
       style={{ width, height }}
     >
-      {/* "LIVE" Badge */}
-      <div className={`absolute top-4 left-4 z-20 flex items-center gap-2 px-2 py-1 rounded-full bg-black/20 backdrop-blur-md border border-white/10 transition-all duration-500 ${isPlaying ? 'opacity-100 scale-105 bg-accent/40 text-white' : 'opacity-60 scale-100 text-white/80'} group-hover:opacity-100`}>
-        <LivePhotoIcon size={12} />
-        <span className="text-[9px] font-sans uppercase tracking-[0.2em] font-medium">Live</span>
+      {/* "LIVE" Badge - Premium Glassmorphism */}
+      <div 
+        className={`absolute top-5 left-5 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 transition-all duration-700 ${isInteracting ? 'opacity-100 scale-105 border-accent/40 bg-accent/20' : 'opacity-60 scale-100'} group-hover:opacity-100`}
+      >
+        <div className={`relative flex items-center justify-center ${isInteracting ? 'animate-pulse' : ''}`}>
+           <LivePhotoIcon size={14} className={isInteracting ? 'text-accent' : 'text-white'} />
+        </div>
+        <span className={`text-[10px] font-sans uppercase tracking-[0.2em] font-semibold ${isInteracting ? 'text-white' : 'text-white/80'}`}>
+            Live
+        </span>
       </div>
 
-      {/* Static Poster - Fades out ONLY when video is actually playing */}
+      {/* Static Background Layer - Stays underlying to prevent black frames */}
       <img 
         src={poster} 
         alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoReady ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
+        className={`w-full h-full object-cover transition-transform duration-1000 ease-whisper ${isInteracting ? 'scale-105' : 'scale-100'}`}
       />
 
-      {/* Live Video */}
+      {/* Live Video Layer - Fades in ONLY when actual pixels are moving */}
       <video
         ref={videoRef}
         src={src}
-        poster={poster}
         muted
         playsInline
         loop
         preload="auto"
-        onPlaying={() => setIsVideoReady(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isPlaying ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+        onPlaying={() => setIsVideoPlaying(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${isVideoPlaying ? 'opacity-100' : 'opacity-0'} pointer-events-none`}
       />
 
-      {/* Ambient Depth (Premium Polish) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+      {/* Visual Polish: Vignette and Light Leak Effect */}
+      <div className={`absolute inset-0 bg-radial-gradient from-transparent via-transparent to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none`}></div>
+      
+      {/* Interactive Overlay - Soft Glow */}
+      <div className={`absolute inset-0 bg-accent/5 opacity-0 ${isInteracting ? 'opacity-20' : 'opacity-0'} transition-opacity duration-1000 pointer-events-none`}></div>
     </div>
   );
 };

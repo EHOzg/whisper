@@ -42,23 +42,23 @@ export const Signature: React.FC = () => {
           <motion.path
             d="M50 80C50 80 85 20 110 80C135 140 150 40 150 40M150 40C150 40 160 100 180 80C200 60 210 40 210 40M210 40C210 40 215 110 235 80C255 50 265 40 265 40M265 40C265 40 270 120 290 80C310 40 320 40 320 40M320 40C320 40 325 100 345 80C365 60 375 40 375 40M375 40C375 40 380 90 400 80C420 70 430 40 430 40"
             stroke="var(--color-text-main)"
-            strokeWidth="3.2" // Base ink path
+            strokeWidth="3.2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="opacity-90"
+            className="opacity-95"
           />
           
           {/* Secondary Layer - Variable Pressure Effect */}
           <motion.path
             d="M50 80C50 80 85 20 110 80C135 140 150 40 150 40M150 40C150 40 160 100 180 80C200 60 210 40 210 40M210 40C210 40 215 110 235 80C255 50 265 40 265 40M265 40C265 40 270 120 290 80C310 40 320 40 320 40M320 40C320 40 325 100 345 80C365 60 375 40 375 40M375 40C375 40 380 90 400 80C420 70 430 40 430 40"
             stroke="var(--color-text-main)"
-            strokeWidth="1.2" // Fine details
+            strokeWidth="1.2"
             strokeLinecap="round"
             strokeLinejoin="round"
             className="opacity-40"
           />
 
-          {/* Third Layer - Ink Shadow / Bleed */}
+          {/* Third Layer - Ink Bleed */}
           <motion.path
             d="M50 80C50 80 85 20 110 80C135 140 150 40 150 40M150 40C150 40 160 100 180 80C200 60 210 40 210 40M210 40C210 40 215 110 235 80C255 50 265 40 265 40M265 40C265 40 270 120 290 80C310 40 320 40 320 40M320 40C320 40 325 100 345 80C365 60 375 40 375 40M375 40C375 40 380 90 400 80C420 70 430 40 430 40"
             stroke="var(--color-accent)"
@@ -66,6 +66,24 @@ export const Signature: React.FC = () => {
             strokeLinecap="round"
             strokeLinejoin="round"
             className="opacity-20 translate-x-[0.5px] translate-y-[0.5px]"
+          />
+          
+          {/* Subtle Brush Tip Cursor */}
+          <motion.circle
+            r="1.8"
+            fill="var(--color-text-main)"
+            style={{
+                offsetPath: `path('M50 80C50 80 85 20 110 80C135 140 150 40 150 40M150 40C150 40 160 100 180 80C200 60 210 40 210 40M210 40C210 40 215 110 235 80C255 50 265 40 265 40M265 40C265 40 270 120 290 80C310 40 320 40 320 40M320 40C320 40 325 100 345 80C365 60 375 40 375 40M375 40C375 40 380 90 400 80C420 70 430 40 430 40')`,
+                offsetRotate: "auto"
+            }}
+            initial={{ offsetDistance: "0%", opacity: 0 }}
+            animate={{ offsetDistance: "100%", opacity: [0, 1, 1, 0] }}
+            transition={{ 
+                duration: 5, 
+                ease: "easeInOut",
+                delay: 1,
+                opacity: { times: [0, 0.05, 0.95, 1] }
+            }}
           />
         </g>
         
