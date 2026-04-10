@@ -20,11 +20,15 @@
     "@tailwindcss/vite": "^4.2.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.183.1",
     "astro": "^6.1.4",
     "framer-motion": "^12.4.10",
     "lucide-react": "^1.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "tailwindcss": "^4.2.2"
+    "react-force-graph-3d": "^1.29.1",
+    "tailwindcss": "^4.2.2",
+    "three": "^0.183.2",
+    "three-stdlib": "^2.36.1"
   }
 }

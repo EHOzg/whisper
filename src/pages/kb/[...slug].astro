@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import KBDetail from '../../modules/KB/KBDetail.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('kb');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description} ogType="article">
+  <KBDetail entry={entry} />
+</BaseLayout>

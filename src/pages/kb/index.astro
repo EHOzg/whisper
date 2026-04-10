@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import KnowledgeDashboard from '../../components/KB/KnowledgeDashboard.astro';
+import { KBGraphView } from '../../components/KB/KBGraphView';
+import { getCollection } from 'astro:content';
+import { generateGraphData } from '../../utils/kb-graph';
+
+const title = "Knowledge Base";
+const description = "一个集中的、结构化的个人知识储备库。";
+
+const allKB = await getCollection('kb');
+const graphData = generateGraphData(allKB);
+---
+
+<BaseLayout {title} {description}>
+  <div class="max-w-7xl mx-auto px-6 py-32 md:py-48">
+    <header class="mb-24 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-8 overflow-hidden">
+        <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+        <span class="text-[10px] uppercase tracking-[0.3em] font-medium text-accent">Digital Garden</span>
+      </div>
+      <h1 class="text-6xl md:text-8xl font-serif font-medium tracking-tighter mb-8 bg-gradient-to-b from-text-main to-text-main/40 bg-clip-text text-transparent italic">
+        Knowledge Base
+      </h1>
+      <p class="text-text-muted text-lg md:text-xl max-w-2xl mx-auto leading-relaxed opacity-60">
+        探索我的第二大脑——这里存放着关于美学、技术与哲学的系统性思考。
+      </p>
+    </header>
+
+    <KBGraphView client:only="react" data={graphData} />
+    
+    <div class="whisper-fade-in-up">
+      <KnowledgeDashboard />
+    </div>
+
+    <footer class="mt-48 text-center">
+      <div class="h-px w-24 bg-accent/20 mx-auto mb-12"></div>
+      <p class="text-[11px] uppercase tracking-[0.4em] text-text-muted opacity-40 italic">
+        Thinking in Public // Whisper
+      </p>
+    </footer>
+  </div>
+</BaseLayout>

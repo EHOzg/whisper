@@ -23,4 +23,15 @@ const inspirations = defineCollection({
   }),
 });
 
-export const collections = { archive, inspirations };
+const kb = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/kb' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    order: z.number().optional(),
+    lang: z.enum(['zh', 'en']).default('zh'),
+  }),
+});
+
+export const collections = { archive, inspirations, kb };

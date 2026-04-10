@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+
+const allKB = await getCollection('kb');
+const categories = [...new Set(allKB.map(item => item.data.category))];
+
+const categoryColors = {
+  "Digital Aesthetics": "from-accent-soft to-accent",
+  "Astro Mastery": "from-accent-gold-soft to-accent-gold",
+  "Whisper Philosophy": "from-accent-sage-soft to-accent-sage",
+};
+
+const getCategoryCount = (cat: string) => allKB.filter(item => item.data.category === cat).length;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
+  {categories.map((category, index) => {
+    const count = getCategoryCount(category);
+    // Bento sizing logic
+    const isLarge = index === 0;
+    const gridClass = isLarge ? "md:col-span-2 md:row-span-2" : "md:col-span-2 md:row-span-1";
+    
+    return (
+      <a 
+        href={`/kb/${category.toLowerCase().replace(/\s+/g, '-')}`}
+        class={`group relative overflow-hidden rounded-3xl p-8 border border-white/10 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl flex flex-col justify-end min-h-[240px] ${gridClass}`}
+      >
+        <!-- Background Gradient -->
+        <div class={`absolute inset-0 bg-gradient-to-br opacity-10 transition-opacity duration-700 group-hover:opacity-20 ${categoryColors[category] || 'from-accent/20 to-accent'}`}></div>
+        
+        <!-- Glass Effect -->
+        <div class="absolute inset-0 bg-white/[0.02] backdrop-blur-[2px] pointer-events-none"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 transition-transform duration-700 group-hover:translate-x-2">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-[10px] uppercase tracking-[0.3em] font-medium text-accent opacity-80">{count} {count === 1 ? 'Entry' : 'Entries'}</span>
+            <div class={`w-1.5 h-1.5 rounded-full animate-pulse bg-accent`}></div>
+          </div>
+          <h3 class="text-3xl font-serif font-medium tracking-tight text-text-main group-hover:text-accent transition-colors duration-500">{category}</h3>
+          <p class="mt-2 text-sm text-text-muted max-w-[80%] line-clamp-2 opacity-60 group-hover:opacity-100 transition-opacity duration-700">
+            {allKB.find(item => item.data.category === category)?.data.description || "探索更多知识领域..."}
+          </p>
+        </div>
+
+        <!-- Decorative Element -->
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-10 transition-opacity duration-1000 rotate-12 scale-150">
+           <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5">
+             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+           </svg>
+        </div>
+      </a>
+    )
+  })}
+</div>

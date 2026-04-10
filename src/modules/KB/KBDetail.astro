@@ -1,0 +1,136 @@
+---
+import { render, type CollectionEntry, getCollection } from 'astro:content';
+import { getLangFromUrl } from '../../i18n/utils';
+
+interface Props {
+	entry: CollectionEntry<'kb'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const lang = getLangFromUrl(Astro.url);
+
+// Get related entries in the same category
+const allKB = await getCollection('kb');
+const relatedEntries = allKB
+  .filter(item => item.data.category === entry.data.category && item.id !== entry.id)
+  .sort((a, b) => (a.data.order || 99) - (b.data.order || 99));
+
+const categorySlug = entry.data.category.toLowerCase().replace(/\s+/g, '-');
+---
+
+<div class="max-w-7xl mx-auto px-6 py-32 md:py-48 flex flex-col lg:flex-row gap-16">
+  <!-- Sidebar Navigation -->
+  <aside class="w-full lg:w-64 flex-shrink-0">
+    <div class="sticky top-32">
+       <a href="/kb" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-accent mb-12 hover:translate-x-[-4px] transition-transform duration-500">
+         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+         Back to Dashboard
+       </a>
+
+       <div class="space-y-8">
+         <div>
+           <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">Category</h4>
+           <div class="p-4 rounded-2xl bg-accent/5 border border-accent/10">
+             <span class="text-sm font-medium text-accent">{entry.data.category}</span>
+           </div>
+         </div>
+
+         {relatedEntries.length > 0 && (
+           <div>
+             <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">Related Nodes</h4>
+             <nav class="flex flex-col gap-2">
+               {relatedEntries.map(related => (
+                 <a 
+                   href={`/kb/${related.id}`}
+                   class="text-sm text-text-muted hover:text-accent transition-colors duration-300 py-1"
+                 >
+                   {related.data.title}
+                 </a>
+               ))}
+             </nav>
+           </div>
+         )}
+       </div>
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <article class="flex-grow max-w-3xl">
+    <header class="mb-20">
+      <h1 class="text-4xl md:text-5xl font-serif font-medium tracking-tight mb-6 leading-tight">
+        {entry.data.title}
+      </h1>
+      <p class="text-xl text-text-muted font-serif italic opacity-60">
+        {entry.data.description}
+      </p>
+      <div class="h-px w-12 bg-accent/20 mt-12"></div>
+    </header>
+
+    <div class="prose-kb whisper-fade-in">
+      <Content />
+    </div>
+  </article>
+</div>
+
+<style is:global>
+  .prose-kb {
+    color: var(--text-main);
+    opacity: 0.9;
+    line-height: 1.8;
+  }
+
+  .prose-kb p {
+    margin-bottom: 2rem;
+  }
+
+  .prose-kb h2 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    margin-top: 4rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+  }
+
+  .prose-kb h3 {
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose-kb ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 2rem;
+  }
+
+  .prose-kb ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .prose-kb ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  .prose-kb blockquote {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: color-mix(in srgb, var(--accent), transparent 97%);
+    border-radius: 1.5rem;
+    font-style: italic;
+    color: var(--accent);
+    border-left: 2px solid var(--accent-gold-soft);
+  }
+</style>
