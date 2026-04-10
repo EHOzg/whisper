@@ -12,13 +12,13 @@
 }
 
 :root {
-  /* Light Theme - Whisper Pure */
-  --bg-base: 0 0% 99%;
-  --text-main: 220 15% 10%;
-  --accent-primary: 210 20% 45%;    /* Whisper Blue - Muted & Sophisticated */
-  --accent-secondary: 35 25% 60%;   /* Ethereal Gold - Warm Highlight */
-  --whisper-glow: 210 20% 95%;
-  --border-muted: 220 10% 90%;
+  /* TTPD Theme - The Manuscript (Linen & Ink) */
+  --bg-base: 45 40% 98%;     /* #F7F5F0 - Linen */
+  --text-main: 0 0% 10%;      /* #1A1A1A - Ink */
+  --accent-primary: 30 18% 46%;  /* #8C7861 - Sepia */
+  --accent-secondary: 40 10% 80%; /* Muted Gray parchment */
+  --whisper-glow: 45 20% 94%;
+  --border-muted: 45 15% 90%;
   
   /* Motion Constants */
   --ease-whisper: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -28,13 +28,13 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Dark Theme - Nocturnal */
-    --bg-base: 220 20% 4%;
-    --text-main: 220 10% 90%;
-    --accent-primary: 210 30% 65%;
-    --accent-secondary: 35 20% 50%;
-    --whisper-glow: 220 20% 12%;
-    --border-muted: 220 15% 15%;
+    /* Obsidian Dark Theme - Inked Night */
+    --bg-base: 0 0% 5%;       /* Deep Obsidian */
+    --text-main: 45 10% 85%;   /* Soft Parchment */
+    --accent-primary: 30 10% 60%;
+    --accent-secondary: 220 5% 40%; /* Steel Blue Gray */
+    --whisper-glow: 0 0% 10%;
+    --border-muted: 0 0% 12%;
   }
 }
 
@@ -48,6 +48,7 @@
 
   --font-serif: "Playfair Display", serif;
   --font-sans: "Inter", sans-serif;
+  --font-typewriter: "Special Elite", system-ui, monospace;
   
   --ease-whisper: var(--ease-whisper);
 }
@@ -84,7 +85,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    opacity: 0.03;
+    opacity: 0.05;
     z-index: 50;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -94,7 +95,7 @@
 
   @media (prefers-color-scheme: dark) {
     body::after {
-      opacity: 0.05;
+      opacity: 0.08;
       mix-blend-mode: soft-light;
     }
   }
@@ -102,7 +103,8 @@
 
 @layer components {
   .whisper-fade-in {
-    animation: whisperFadeIn var(--duration-page) var(--ease-whisper) forwards;
+    will-change: opacity;
+    animation: whisperFadeIn 800ms var(--ease-whisper) forwards;
   }
 
   .whisper-glass {
@@ -112,11 +114,9 @@
   @keyframes whisperFadeIn {
     from {
       opacity: 0;
-      transform: translateY(12px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 }

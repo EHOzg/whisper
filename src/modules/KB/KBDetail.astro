@@ -1,14 +1,7 @@
 ---
 import { render, type CollectionEntry, getCollection } from 'astro:content';
-import { getLangFromUrl } from '../../i18n/utils';
-
-interface Props {
-	entry: CollectionEntry<'kb'>;
-}
-
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const lang = getLangFromUrl(Astro.url);
 
 // Get related entries in the same category
 const allKB = await getCollection('kb');
@@ -25,12 +18,12 @@ const categorySlug = entry.data.category.toLowerCase().replace(/\s+/g, '-');
     <div class="sticky top-32">
        <a href="/kb" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-accent mb-12 hover:translate-x-[-4px] transition-transform duration-500">
          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-         Back to Dashboard
+         返回控制台
        </a>
 
        <div class="space-y-8">
          <div>
-           <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">Category</h4>
+           <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">所属分类</h4>
            <div class="p-4 rounded-2xl bg-accent/5 border border-accent/10">
              <span class="text-sm font-medium text-accent">{entry.data.category}</span>
            </div>
@@ -38,7 +31,7 @@ const categorySlug = entry.data.category.toLowerCase().replace(/\s+/g, '-');
 
          {relatedEntries.length > 0 && (
            <div>
-             <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">Related Nodes</h4>
+             <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-4 opacity-50">关联节点</h4>
              <nav class="flex flex-col gap-2">
                {relatedEntries.map(related => (
                  <a 

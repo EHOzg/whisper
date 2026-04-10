@@ -1,14 +1,15 @@
 ---
 title: "极简主义与负空间"
-description: "探索在数字界面中如何通过留白传达宁静与力量。详见 Astro 实践。关联文档：Astro Content Layer 深度实践。"
+description: "探讨如何在数字界面中通过留白传达宁静与力量。关联：Astro Content Layer 深度实践。"
 category: "Digital Aesthetics"
 order: 1
 lang: "zh"
+pubDate: 2024-04-06
 ---
 
 # 极简主义与负空间
 
-在 “Whisper” 的设计中，负空间（Negative Space）不仅是空白，它是一种**有意义的沉默**。
+在 Whisper 的设计中，负空间（Negative Space）不仅是空白，它是一种**有意义的沉默**。
 
 ### 核心原则
 1. **减少干扰**：移除所有不必要的装饰。

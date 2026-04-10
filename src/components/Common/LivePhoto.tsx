@@ -21,7 +21,7 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   const handleInteractionStart = () => {
     setIsPlaying(true);
@@ -30,6 +30,7 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
 
   const handleInteractionEnd = () => {
     setIsPlaying(false);
+    setIsVideoReady(false);
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -51,11 +52,11 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
         <span className="text-[9px] font-sans uppercase tracking-[0.2em] font-medium">Live</span>
       </div>
 
-      {/* Static Poster */}
+      {/* Static Poster - Fades out ONLY when video is actually playing */}
       <img 
         src={poster} 
         alt={alt}
-        className={`w-full h-full object-cover transition-opacity duration-700 ${isPlaying ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
+        className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoReady ? 'opacity-0 scale-105' : 'opacity-100 scale-100'}`}
       />
 
       {/* Live Video */}
@@ -66,7 +67,8 @@ export const LivePhoto: React.FC<LivePhotoProps> = ({
         muted
         playsInline
         loop
-        onLoadedData={() => setIsLoaded(true)}
+        preload="auto"
+        onPlaying={() => setIsVideoReady(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${isPlaying ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
       />
 

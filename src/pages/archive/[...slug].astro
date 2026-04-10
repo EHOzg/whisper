@@ -5,8 +5,7 @@ import ArticleDetail from '../../modules/Archive/ArticleDetail.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('archive');
-  // Handle posts with lang: zh
-	return posts.filter(post => post.data.lang === 'zh').map((post) => {
+	return posts.map((post) => {
     const slug = post.id.split('/').pop()?.replace(/\.(md|mdx)$/, '');
     return {
       params: { slug },

@@ -1,14 +1,11 @@
 ---
 import { GithubIcon, Rss } from "../Common/Icons";
-import { getLangFromUrl, useTranslatedPath } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
-const translatePath = useTranslatedPath(lang);
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
   { name: "GitHub", href: "https://github.com/EHOzg", icon: GithubIcon, external: true },
-  { name: "RSS", href: translatePath("/rss.xml"), icon: Rss, external: false },
+  { name: "RSS", href: "/rss.xml", icon: Rss, external: false },
 ];
 ---
 
@@ -34,7 +31,7 @@ const footerLinks = [
   
   <div class="flex flex-col items-center gap-2">
     <div class="text-[9px] uppercase tracking-[0.5em] opacity-20 font-sans select-none">
-      © {currentYear} Whisper // {lang === 'zh' ? '保留所有灵感阴影' : 'All shadows reserved.'}
+      © {currentYear} Whisper // 保留所有灵感阴影
     </div>
     <div class="w-8 h-[1px] bg-text-main/5"></div>
   </div>

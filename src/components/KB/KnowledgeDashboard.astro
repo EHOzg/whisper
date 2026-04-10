@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 const allKB = await getCollection('kb');
 const categories = [...new Set(allKB.map(item => item.data.category))];
 
-const categoryColors = {
+const categoryColors: { [key: string]: string } = {
   "Digital Aesthetics": "from-accent-soft to-accent",
   "Astro Mastery": "from-accent-gold-soft to-accent-gold",
   "Whisper Philosophy": "from-accent-sage-soft to-accent-sage",
@@ -34,7 +34,7 @@ const getCategoryCount = (cat: string) => allKB.filter(item => item.data.categor
         <!-- Content -->
         <div class="relative z-10 transition-transform duration-700 group-hover:translate-x-2">
           <div class="flex items-center gap-3 mb-2">
-            <span class="text-[10px] uppercase tracking-[0.3em] font-medium text-accent opacity-80">{count} {count === 1 ? 'Entry' : 'Entries'}</span>
+            <span class="text-[10px] uppercase tracking-[0.3em] font-medium text-accent opacity-80">{count} 篇</span>
             <div class={`w-1.5 h-1.5 rounded-full animate-pulse bg-accent`}></div>
           </div>
           <h3 class="text-3xl font-serif font-medium tracking-tight text-text-main group-hover:text-accent transition-colors duration-500">{category}</h3>

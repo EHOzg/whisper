@@ -198,13 +198,15 @@ export const KnowledgeGraph3D: React.FC<KnowledgeGraph3DProps> = ({ data }) => {
       />
       
       {/* HUD Info */}
-      <div className="absolute bottom-12 left-12 z-50 pointer-events-none whisper-fade-in">
+      <div className="absolute bottom-12 left-12 z-50 pointer-events-none whisper-fade-in font-sans">
         <div className="flex items-center gap-4 mb-4">
            <div className="w-12 h-[1px] bg-accent/30"></div>
-           <h2 className="text-white font-serif text-3xl italic tracking-tight opacity-60">Neural Network Architecture</h2>
+           <h2 className="text-white font-serif text-3xl italic tracking-tight opacity-60">
+             神经网络架构
+           </h2>
         </div>
         <p className="text-white/20 text-[10px] uppercase tracking-[0.5em] ml-16 max-w-xs leading-relaxed">
-          Interactive knowledge mapping through celestial node distribution and energy flow.
+          通过节点分布与能量流动进行的交互式知识映射。
         </p>
       </div>
     </div>

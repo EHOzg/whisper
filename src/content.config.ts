@@ -9,7 +9,6 @@ const archive = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).optional(),
-    lang: z.enum(['zh', 'en']).default('zh'),
   }),
 });
 
@@ -30,7 +29,6 @@ const kb = defineCollection({
     description: z.string(),
     category: z.string(),
     order: z.number().optional(),
-    lang: z.enum(['zh', 'en']).default('zh'),
   }),
 });
 

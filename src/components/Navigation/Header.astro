@@ -1,26 +1,19 @@
 ---
-import { getLangFromUrl, useTranslations, useTranslatedPath } from "../../i18n/utils";
-import { LanguageToggle } from "./LanguageToggle";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
-
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.replace(/\/$/, "") || "/";
 
 const navLinks = [
-  { href: "/inspiration", label: t('nav.inspiration') },
-  { href: "/kb", label: t('nav.kb') },
-  { href: "/resume", label: t('nav.resume') },
-  { href: "/archive", label: t('nav.archive') },
+  { href: "/inspiration", label: "灵感" },
+  { href: "/kb", label: "知识库" },
+  { href: "/resume", label: "简历" },
+  { href: "/archive", label: "存档" },
 ];
 ---
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-700 border-b border-border-muted bg-bg-base/60 backdrop-blur-xl">
   <div class="max-w-[1440px] mx-auto px-6 h-20 md:px-16 flex items-center justify-between">
     <!-- Brand Logo -->
-    <a href={translatePath('/')} class="group flex items-center gap-4">
+    <a href="/" class="group flex items-center gap-4">
       <div class="w-6 h-[1px] bg-accent/20 group-hover:w-10 group-hover:bg-accent/60 transition-all duration-700"></div>
       <span class="text-[10px] uppercase tracking-[0.6em] font-sans opacity-40 group-hover:opacity-100 group-hover:text-accent transition-all duration-700">
         Whisper
@@ -30,11 +23,10 @@ const navLinks = [
     <!-- Navigation Links -->
     <nav class="hidden md:flex items-center gap-16">
       {navLinks.map((link) => {
-        const localizedPath = translatePath(link.href);
-        const isActive = currentPath === localizedPath || (localizedPath === '/' && (currentPath === '' || currentPath === '/'));
+        const isActive = currentPath === link.href || (link.href === '/' && (currentPath === '' || currentPath === '/'));
         return (
           <a 
-            href={localizedPath}
+            href={link.href}
             class={`text-[9px] uppercase tracking-[0.4em] font-sans transition-all duration-700 relative group ${isActive ? 'text-accent opacity-100' : 'text-text-main/60 hover:text-accent hover:opacity-100'}`}
           >
             {link.label}
@@ -42,11 +34,6 @@ const navLinks = [
           </a>
         )
       })}
-
-      <!-- Language Toggle -->
-      <div class="pl-8 border-l border-border-muted h-4 flex items-center">
-        <LanguageToggle client:load currentLang={lang} currentPath={currentPath} />
-      </div>
     </nav>
     
     <!-- Mobile Menu (Minimalist dots) -->

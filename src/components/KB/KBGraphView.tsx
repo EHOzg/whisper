@@ -15,19 +15,19 @@ export const KBGraphView: React.FC<KBGraphViewProps> = ({ data }) => {
   return (
     <div className="relative">
       {/* View Switcher UI */}
-      <div className="flex justify-center mb-16 relative z-30">
+      <div className="flex justify-center mb-16 relative z-30 font-sans">
         <div className="flex p-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10">
           <button 
             onClick={() => setView('bento')}
             className={`px-6 py-2 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${view === 'bento' ? 'bg-white/10 text-white shadow-lg' : 'text-white/40 hover:text-white/60'}`}
           >
-            Dashboard
+            工作台
           </button>
           <button 
             onClick={() => setView('graph')}
             className={`px-6 py-2 rounded-full text-[10px] uppercase tracking-[0.2em] transition-all duration-500 ${view === 'graph' ? 'bg-accent/40 text-white shadow-lg' : 'text-white/40 hover:text-white/60'}`}
           >
-            Deep Space Graph
+            深空图谱
           </button>
         </div>
       </div>
@@ -36,16 +36,12 @@ export const KBGraphView: React.FC<KBGraphViewProps> = ({ data }) => {
         {view === 'bento' ? (
           <motion.div 
             key="bento"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
           >
-             {/* Note: This is a placeholder for where the static Dashboard was. 
-                 In index.astro, we will wrap the KnowledgeDashboard with this logic if possible, 
-                 or just return children. 
-                 Actually, simpler: index.astro handles the Bento, and this component handles ONLY the graph overlay.
-             */}
+             {/* Bento Dashboard remains here */}
           </motion.div>
         ) : (
           <motion.div 
@@ -57,15 +53,15 @@ export const KBGraphView: React.FC<KBGraphViewProps> = ({ data }) => {
           >
              <button 
                onClick={() => setView('bento')}
-               className="absolute top-8 right-8 z-[110] px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase tracking-[0.3em] rounded-full hover:bg-white/20 transition-all"
+               className="absolute top-8 right-8 z-[110] px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase tracking-[0.3em] rounded-full hover:bg-white/20 transition-all font-sans"
              >
-               Exit Graph
+               退出图谱
              </button>
              
              <Suspense fallback={
                <div className="w-full h-full flex flex-col items-center justify-center bg-black">
                  <div className="w-12 h-12 rounded-full border border-accent/30 border-t-accent animate-spin mb-4"></div>
-                 <span className="text-white/20 text-[10px] uppercase tracking-[0.5em]">Initializing Neural Network</span>
+                 <span className="text-white/20 text-[10px] uppercase tracking-[0.5em]">星群落入深空的碎片</span>
                </div>
              }>
                <KnowledgeGraph3D data={data} />

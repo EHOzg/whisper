@@ -1,84 +1,46 @@
 ---
 import { SocialLinks, ContactLink } from "./components/SocialLinks";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-const resumeData = {
-  zh: [
-    {
-      period: "2024 — 至今",
-      title: "静谧架构",
-      company: "个人理想实践",
-      monologue: "在沉默中建造。我发现那些最响亮的声音往往言之无物。Project Whisper 是我归回数字工艺核心的一次尝试——在这里，性能是被感知的，而不仅仅是被测量的；美学是通向专注的门户。",
-      details: ["Astro", "React Islands", "设计系统", "动效编排"]
-    },
-    {
-      period: "2021 — 2023",
-      title: "首席视觉工程师",
-      company: "Aether Dynamics",
-      monologue: "从代码到画布的过渡是天衣无缝的。我们不仅仅是在构建界面，而是在编排数字体验。我意识到，300 毫秒的过渡不仅仅是物理上的延迟，更是连接意图与行动的心理桥梁。",
-      details: ["创意代码", "WebGL", "前端架构", "团队导师"]
-    },
-    {
-      period: "2018 — 2021",
-      title: "界面设计师",
-      company: "Origin Studio",
-      monologue: "最初，只有留白。我花了三年时间去理解像素的重量和排版的引力。就在那时，我意识到设计不是你增加了什么，而是你是否有勇气移除什么。",
-      details: ["UI/UX 设计", "原型设计", "设计工程"]
-    },
-    {
-      period: "早些时候",
-      title: "觉醒",
-      company: "自主探索",
-      monologue: "每个故事都有序曲。我的序曲始于对逻辑如何具象化为美的好奇。我写下的第一行代码就像在黑暗房间里的一声耳语——微弱，但充满了可能性。",
-      details: ["计算机科学基础", "艺术探索"]
-    }
-  ],
-  en: [
-    {
-      period: "2024 — Present",
-      title: "Whisper Architecture",
-      company: "Personal Practice",
-      monologue: "Building in silence. I found that the loudest voices often have the least to say. Project Whisper is my attempt to return to the core of digital craftsmanship—where performance is felt, not just measured, and aesthetics serve as a gateway to focus.",
-      details: ["Astro", "React Islands", "Design Systems", "Motion Choreography"]
-    },
-    {
-      period: "2021 — 2023",
-      title: "Lead Visual Engineer",
-      company: "Aether Dynamics",
-      monologue: "The transition from code to canvas was seamless. We weren't just building interfaces; we were orchestrating digital experiences. I learned that a 300ms transition isn't just a physical delay, but a psychological bridge between intent and action.",
-      details: ["Creative Coding", "WebGL", "Frontend Architecture", "Team Mentorship"]
-    },
-    {
-      period: "2018 — 2021",
-      title: "Interface Designer",
-      company: "Origin Studio",
-      monologue: "In the beginning, there was only white space. I spent three years understanding the weight of a pixel and the gravity of typography. It was here I realized that design is not what you add, but what you have the courage to remove.",
-      details: ["UI/UX Design", "Prototyping", "Design Engineering"]
-    },
-    {
-      period: "Early Days",
-      title: "The Awakening",
-      company: "Self-Directed",
-      monologue: "Every story has a prologue. Mine began with a curiosity for how logic can manifest as beauty. The first line of code I wrote felt like a whisper in a dark room—small, but full of potential.",
-      details: ["Computer Science Fundamentals", "Artistic Exploration"]
-    }
-  ]
-};
-
-const currentData = resumeData[lang] || resumeData.zh;
+const currentData = [
+  {
+    period: "2024 — 至今",
+    title: "静谧架构",
+    company: "个人理想实践",
+    monologue: "在沉默中建造。我发现那些最响亮的声音往往言之无物。Project Whisper 是我归回数字工艺核心的一次尝试——在这里，性能是被感知的，而不仅仅是被测量的；美学是通向专注的门户。",
+    details: ["Astro", "React Islands", "设计系统", "动效编排"]
+  },
+  {
+    period: "2021 — 2023",
+    title: "首席视觉工程师",
+    company: "Aether Dynamics",
+    monologue: "从代码到画布的过渡是天衣无缝的。我们不仅仅是在构建界面，而是在编排数字体验。我意识到，300 毫秒的过渡不仅仅是物理上的延迟，更是连接意图与行动的心理桥梁。",
+    details: ["创意代码", "WebGL", "前端架构", "团队导师"]
+  },
+  {
+    period: "2018 — 2021",
+    title: "界面设计师",
+    company: "Origin Studio",
+    monologue: "最初，只有留白。我花了三年时间去理解像素的重量和排版的引力。就在那时，我意识到设计不是你增加了什么，而是你是否有勇气移除什么。",
+    details: ["UI/UX 设计", "原型设计", "设计工程"]
+  },
+  {
+    period: "早些时候",
+    title: "觉醒",
+    company: "自主探索",
+    monologue: "每个故事都有序曲。我的序曲始于对逻辑如何具象化为美的好奇。我写下的第一行代码就像在黑暗房间里的一声耳语——微弱，但充满了可能性。",
+    details: ["计算机科学基础", "艺术探索"]
+  }
+];
 ---
 
 <div class="max-w-4xl mx-auto px-6 py-32 md:py-48">
   <!-- Header -->
   <div class="mb-32 space-y-6">
     <h1 class="text-4xl md:text-6xl tracking-tight leading-tight max-w-2xl whisper-fade-in" style="animation-delay: 100ms;">
-      {t('resume.title')}
+      成长历程
     </h1>
     <p class="text-accent text-sm md:text-base max-w-md leading-relaxed whisper-fade-in" style="animation-delay: 300ms;">
-      {t('resume.subtitle')}
+      不止于一份简历，更是一段关于好奇心与手艺的叙事。
     </p>
   </div>
 
@@ -135,22 +97,12 @@ const currentData = resumeData[lang] || resumeData.zh;
 
   <!-- Perspective Section -->
   <div class="mt-48 md:mt-64 pt-32 border-t border-text-main/5 whisper-fade-in" style="animation-delay: 1500ms;">
-    <div class="grid md:grid-cols-2 gap-16 items-start">
+    <div class="max-w-2xl">
       <div class="space-y-6">
-        <h2 class="text-2xl md:text-3xl">{t('resume.philosophy')}</h2>
+        <h2 class="text-2xl md:text-3xl">设计哲学</h2>
         <p class="text-accent text-sm md:text-base leading-relaxed">
-          {t('resume.philosophy.desc')}
+          我相信技术应当是无形的——它是在追求以人为本目标时的静默伙伴。我的工作遵循“负空间”原则，确保每一次增加都有其意义。
         </p>
-      </div>
-      <div class="space-y-12">
-        <div class="space-y-6">
-          <span class="text-[10px] uppercase tracking-[0.4em] opacity-40 font-sans block">Socials</span>
-          <SocialLinks client:load />
-        </div>
-        <div class="space-y-6">
-          <span class="text-[10px] uppercase tracking-[0.4em] opacity-40 font-sans block">Contact</span>
-          <ContactLink client:load email="whisper@architecture.com" />
-        </div>
       </div>
     </div>
   </div>

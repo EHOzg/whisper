@@ -16,31 +16,6 @@ const {
 } = Astro.props;
 
 const siteTitle = title ? `${title} // Whisper` : "Whisper // EHO";
-
-// Multilingual support
-const locales = ['zh', 'en'];
-const currentPath = Astro.url.pathname;
-
-// Generate hreflang tags
-const alternateLinks = locales.map((locale) => {
-  const isDefault = locale === 'zh';
-  // Strip existing locale prefix to get clean path
-  let cleanPath = currentPath;
-  locales.forEach(l => {
-    if (cleanPath.startsWith(`/${l}/`)) {
-        cleanPath = cleanPath.slice(l.length + 1);
-    } else if (cleanPath === `/${l}`) {
-        cleanPath = "/";
-    }
-  });
-  
-  const localizedPath = isDefault ? cleanPath : `/${locale}${cleanPath.startsWith('/') ? '' : '/'}${cleanPath}`;
-  return {
-    rel: 'alternate',
-    hreflang: locale,
-    href: new URL(localizedPath, Astro.site).toString()
-  };
-});
 ---
 
 <!-- Global Metadata -->
@@ -72,11 +47,6 @@ const alternateLinks = locales.map((locale) => {
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<!-- Localization -->
-{alternateLinks.map(({ rel, hreflang, href }) => (
-  <link rel={rel} hreflang={hreflang} href={href} />
-))}
-<link rel="alternate" hreflang="x-default" href={new URL("/", Astro.site)} />
-
 <!-- RSS Discovery -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
 <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />

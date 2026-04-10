@@ -1,4 +1,5 @@
 // @ts-check
+// Trigger sync: 2026-04-10T14:59
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -10,14 +11,6 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://whisper-eho.netlify.app/',
-  i18n: {
-    defaultLocale: 'zh',
-    locales: ['zh', 'en'],
-    routing: {
-      prefixDefaultLocale: false,
-      redirectToDefaultLocale: false
-    }
-  },
   vite: {
     plugins: [tailwindcss()]
   },
