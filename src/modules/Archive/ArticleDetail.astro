@@ -10,7 +10,33 @@ interface Props {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const lang = getLangFromUrl(Astro.url);
+
+// Structured Data (JSON-LD)
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "datePublished": post.data.pubDate.toISOString(),
+  "dateModified": post.data.updatedDate?.toISOString() || post.data.pubDate.toISOString(),
+  "author": {
+    "@type": "Person",
+    "name": "EHO",
+    "url": "https://whisper-eho.netlify.app/resume"
+  },
+  "image": new URL("/assets/og-image.jpg", Astro.site).toString(), // Fallback or post image
+  "publisher": {
+    "@type": "Organization",
+    "name": "Whisper",
+    "logo": {
+      "@type": "ImageObject",
+      "url": new URL("/favicon.svg", Astro.site).toString()
+    }
+  }
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
 <article class="max-w-3xl mx-auto px-6 py-32 md:py-48">
   <!-- Header -->
