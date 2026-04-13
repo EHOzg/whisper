@@ -121,8 +121,7 @@
 
 @layer components {
   .whisper-fade-in {
-    will-change: opacity;
-    animation: whisperFadeIn 800ms var(--ease-whisper) forwards;
+    animation: whisperFadeIn 600ms var(--ease-whisper) both;
   }
 
   .whisper-glass {
@@ -132,9 +131,11 @@
   @keyframes whisperFadeIn {
     from {
       opacity: 0;
+      transform: translateY(6px);
     }
     to {
       opacity: 1;
+      transform: translateY(0);
     }
   }
 }

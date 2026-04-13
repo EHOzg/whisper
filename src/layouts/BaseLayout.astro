@@ -79,7 +79,7 @@ const searchData = [
 		</div>
 
 		{showHeader && <Header />}
-		<main class={`whisper-fade-in relative z-10 w-full ${bodyClass.includes('overflow-hidden') ? 'h-full' : 'flex-grow'} ${showHeader ? 'pt-[var(--nav-height)]' : ''} ${mainClass}`}>
+		<main class={`relative z-10 w-full ${bodyClass.includes('overflow-hidden') ? 'h-full' : 'flex-grow'} ${showHeader ? 'pt-[var(--nav-height)]' : ''} ${mainClass}`}>
 			<slot />
 		</main>
 		{showFooter && <Footer />}
