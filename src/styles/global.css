@@ -24,6 +24,7 @@
   --ease-whisper: cubic-bezier(0.2, 0.8, 0.2, 1);
   --duration-micro: 300ms;
   --duration-page: 1200ms;
+  --nav-height: 3.5rem;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { InspirationForest } from './InspirationForest';
+import { InspirationBoard } from './InspirationBoard';
 
 interface InspirationControllerProps {
   inspirations: any[];
@@ -7,8 +7,8 @@ interface InspirationControllerProps {
 
 export const InspirationController: React.FC<InspirationControllerProps> = ({ inspirations }) => {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <InspirationForest inspirations={inspirations} />
+    <div className="relative w-full min-h-screen">
+      <InspirationBoard inspirations={inspirations} />
     </div>
   );
 };

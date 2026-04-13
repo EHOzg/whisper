@@ -1,9 +1,8 @@
 ---
 title: "Astro Content Layer 深度实践"
 description: "掌握如何高效地组织和检索你的内容集合。"
-category: "Astro Mastery"
+category: "工程实战"
 order: 1
-lang: "zh"
 ---
 
 # Astro Content Layer 深度实践

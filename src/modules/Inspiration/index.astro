@@ -5,6 +5,6 @@ import { InspirationController } from '../../components/Inspiration/InspirationC
 const inspirations = await getCollection('inspirations');
 ---
 
-<div class="w-full h-screen relative bg-bg-base overflow-hidden">
+<div class="w-full relative bg-bg-base">
   <InspirationController inspirations={inspirations} client:only="react" />
 </div>
