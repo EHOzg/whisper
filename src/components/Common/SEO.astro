@@ -1,21 +1,21 @@
 ---
 interface Props {
-  title?: string;
-  description?: string;
-  image?: string;
-  ogType?: 'website' | 'article';
-  canonicalURL?: URL;
+  title?: string
+  description?: string
+  image?: string
+  ogType?: 'website' | 'article'
+  canonicalURL?: URL
 }
 
 const {
   title,
-  description = "A quiet container for digital shadows.",
-  image = "/assets/og-image.jpg", // Default OG image
-  ogType = "website",
+  description = 'A quiet container for digital shadows.',
+  image = '/assets/og-image.jpg', // Default OG image
+  ogType = 'website',
   canonicalURL = new URL(Astro.url.pathname, Astro.site),
-} = Astro.props;
+} = Astro.props
 
-const siteTitle = title ? `${title} // Whisper` : "Whisper // EHO";
+const siteTitle = title ? `${title} / Whisper` : 'Whisper / EHO'
 ---
 
 <!-- Global Metadata -->
@@ -31,7 +31,10 @@ const siteTitle = title ? `${title} // Whisper` : "Whisper // EHO";
 <title>{siteTitle}</title>
 <meta name="title" content={siteTitle} />
 <meta name="description" content={description} />
-<meta name="google-site-verification" content="rvUmPqPjW7Ox41fQ2VtgyNctxtsWGkcUb2wKang2p4I" />
+<meta
+  name="google-site-verification"
+  content="rvUmPqPjW7Ox41fQ2VtgyNctxtsWGkcUb2wKang2p4I"
+/>
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
@@ -48,5 +51,15 @@ const siteTitle = title ? `${title} // Whisper` : "Whisper // EHO";
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- RSS Discovery -->
-<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
-<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="RSS Feed"
+  href="/rss.xml"
+/>
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="RSS Feed"
+  href="/rss.xml"
+/>

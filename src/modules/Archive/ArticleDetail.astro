@@ -68,7 +68,7 @@ const jsonLd = {
     </h1>
 
     <p
-      class="text-xl md:text-2xl text-accent font-serif italic max-w-2xl leading-relaxed whisper-fade-in"
+      class="text-xl md:text-2xl text-accent font-serif max-w-2xl leading-relaxed whisper-fade-in"
       style="animation-delay: 500ms;">
       {post.data.description}
     </p>
@@ -98,18 +98,12 @@ const jsonLd = {
   </div>
 </div>
 
-<div
-  id="reader-glow"
-  class="fixed pointer-events-none w-64 h-64 rounded-full bg-accent/5 blur-[100px] z-[5] opacity-0 transition-opacity duration-1000">
-</div>
+
 
 <script>
-  // Immersive Reader Logic
+  // Reading Progress
   const pulse = document.getElementById('reading-pulse')
-  const glow = document.getElementById('reader-glow')
-  const body = document.body
 
-  // 1. Reading Progress & Atmosphere Shift
   window.addEventListener('scroll', () => {
     const totalHeight =
       document.documentElement.scrollHeight - window.innerHeight
@@ -120,7 +114,6 @@ const jsonLd = {
     }
 
     // Dynamic Atmosphere: Shift toward warmer parchment as we read deeper
-    // bg-base Linen: 45 40% 98%
     const warmth = 45
     const saturation = 40 - progress * 10
     const lightness = 98 - progress * 4
@@ -130,20 +123,6 @@ const jsonLd = {
       `${warmth} ${saturation}% ${lightness}%`,
     )
   })
-
-  // 2. Custom Glow Cursor
-  window.addEventListener('mousemove', (e) => {
-    if (glow) {
-      glow.style.left = `${e.clientX - 128}px`
-      glow.style.top = `${e.clientY - 128}px`
-      glow.style.opacity = '1'
-    }
-  })
-
-  // Initial opacity reveal
-  setTimeout(() => {
-    if (glow) glow.style.opacity = '0.4'
-  }, 1000)
 </script>
 
 <style is:global>
@@ -151,7 +130,7 @@ const jsonLd = {
   .prose-custom {
     color: var(--text-main);
     opacity: 0.9;
-    line-height: 1.8;
+    line-height: 1.7;
     font-family: var(--font-serif);
     font-size: 1.125rem;
   }
@@ -163,13 +142,12 @@ const jsonLd = {
   }
 
   .prose-custom p {
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
   }
 
   .prose-custom h2 {
     color: var(--text-main);
     font-family: var(--font-serif);
-    font-style: italic;
     font-size: 1.875rem; /* 3xl */
     line-height: 2.25rem;
     margin-top: 4rem;
@@ -196,19 +174,18 @@ const jsonLd = {
   .prose-custom blockquote {
     padding-left: 2rem;
     border-left: 1px solid color-mix(in srgb, var(--text-main), transparent 90%);
-    font-style: italic;
     color: var(--accent);
     margin: 3rem 0;
   }
 
   .prose-custom ul,
   .prose-custom ol {
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     padding-left: 1.5rem;
   }
 
   .prose-custom li {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
     font-family: var(--font-sans);
     font-size: 1rem;
   }
@@ -241,12 +218,12 @@ const jsonLd = {
 
   /* Code Blocks */
   .prose-custom pre {
-    margin: 3rem 0;
-    padding: 2rem 0;
+    margin: 4rem 0;
+    padding: 1.75rem 2rem;
     font-family:
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
       'Courier New', monospace;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.7;
     overflow-x: auto;
     border-top: 1px solid color-mix(in srgb, var(--text-main), transparent 95%);
@@ -255,8 +232,8 @@ const jsonLd = {
 
   @media (max-width: 768px) {
     .prose-custom pre {
-      padding: 1.5rem;
-      margin: 2rem -1.5rem;
+      padding: 1.25rem 1.5rem;
+      margin: 2.5rem -1.5rem;
       border-radius: 0;
       border-left: none;
       border-right: none;

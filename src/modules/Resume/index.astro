@@ -3,47 +3,30 @@ import { SocialLinks, ContactLink } from "./components/SocialLinks";
 
 const currentData = [
   {
-    period: "2024 — 至今",
-    title: "静谧架构",
-    company: "个人理想实践",
-    monologue: "在沉默中建造。我发现那些最响亮的声音往往言之无物。Project Whisper 是我归回数字工艺核心的一次尝试——在这里，性能是被感知的，而不仅仅是被测量的；美学是通向专注的门户。",
-    details: ["Astro", "React Islands", "设计系统", "动效编排"]
+    period: "2023.12 — 至今",
+    title: "核心开发者 / 创始人",
+    company: "Project Whisper",
+    monologue: "重新定义个人数字空间。在 Project Whisper 中，我实验了极致的排版与交互逻辑。代码不再是冰冷的逻辑，而是流动的诗意。我们追求的是一种‘数字静谧’，让用户在喧嚣的项目中找到专注的出口。",
+    details: ["Astro 6.1", "Tailwind 4.0", "Framer Motion", "GLSL"]
   },
   {
-    period: "2021 — 2023",
-    title: "首席视觉工程师",
-    company: "Aether Dynamics",
-    monologue: "从代码到画布的过渡是天衣无缝的。我们不仅仅是在构建界面，而是在编排数字体验。我意识到，300 毫秒的过渡不仅仅是物理上的延迟，更是连接意图与行动的心理桥梁。",
-    details: ["创意代码", "WebGL", "前端架构", "团队导师"]
+    period: "2021.05 — 2023.11",
+    title: "资深前端工程师",
+    company: "赛博飞跃 (Cyber Leap)",
+    monologue: "负责高性能 Web 应用的架构设计。通过引入 WebGL 渲染管线，我们将视觉表现力提升到了新的维度，同时保持了极佳的加载速度。我主导了核心组件库的重构，并成功推动了团队向现代响应式架构的转型。",
+    details: ["Three.js", "WebGL", "性能优化", "架构设计"]
   },
   {
-    period: "2018 — 2021",
-    title: "界面设计师",
-    company: "Origin Studio",
-    monologue: "最初，只有留白。我花了三年时间去理解像素的重量和排版的引力。就在那时，我意识到设计不是你增加了什么，而是你是否有勇气移除什么。",
-    details: ["UI/UX 设计", "原型设计", "设计工程"]
-  },
-  {
-    period: "早些时候",
-    title: "觉醒",
-    company: "自主探索",
-    monologue: "每个故事都有序曲。我的序曲始于对逻辑如何具象化为美的好奇。我写下的第一行代码就像在黑暗房间里的一声耳语——微弱，但充满了可能性。",
-    details: ["计算机科学基础", "艺术探索"]
+    period: "2018.07 — 2021.04",
+    title: "视觉前端开发",
+    company: "创意工坊 (Creative Workshop)",
+    monologue: "在这里，我学会了如何让像素呼吸。每一场交互都是一场对话。从 1:1 还原设计稿到探索动态界面的可能性，我致力于打破设计与开发之间的界限，创造令人心动的交互体验。",
+    details: ["UI/UX", "SVG 动画", "交互设计", "跨平台协作"]
   }
 ];
 ---
 
 <div class="max-w-4xl mx-auto px-6 py-32 md:py-48">
-  <!-- Header -->
-  <div class="mb-32 space-y-6">
-    <h1 class="text-4xl md:text-6xl tracking-tight leading-tight max-w-2xl whisper-fade-in" style="animation-delay: 100ms;">
-      成长历程
-    </h1>
-    <p class="text-accent text-sm md:text-base max-w-md leading-relaxed whisper-fade-in" style="animation-delay: 300ms;">
-      不止于一份简历，更是一段关于好奇心与手艺的叙事。
-    </p>
-  </div>
-
   <!-- Timeline -->
   <div class="relative">
     <!-- Vertical Line -->
@@ -51,7 +34,7 @@ const currentData = [
 
     <div class="space-y-24 md:space-y-32">
       {currentData.map((item, index) => (
-        <div class="relative flex flex-col md:flex-row group whisper-fade-in" style={`animation-delay: ${500 + index * 200}ms;`}>
+        <div class="relative flex flex-col md:flex-row group whisper-fade-in" style={`animation-delay: ${600 + index * 200}ms;`}>
           <!-- Period (Desktop) -->
           <div class="hidden md:block w-1/4 pr-12 text-right">
             <span class="text-[10px] uppercase tracking-[0.3em] text-accent opacity-50 group-hover:opacity-100 transition-opacity duration-700 font-sans">
@@ -95,17 +78,40 @@ const currentData = [
     </div>
   </div>
 
-  <!-- Perspective Section -->
-  <div class="mt-48 md:mt-64 pt-32 border-t border-text-main/5 whisper-fade-in" style="animation-delay: 1500ms;">
-    <div class="max-w-2xl">
+  <!-- Skills Section -->
+  <div class="mt-48 md:mt-64 whisper-fade-in" style="animation-delay: 1300ms;">
+    <h2 class="text-2xl md:text-3xl mb-16 tracking-tight">技术栈</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
       <div class="space-y-6">
-        <h2 class="text-2xl md:text-3xl">设计哲学</h2>
-        <p class="text-accent text-sm md:text-base leading-relaxed">
-          我相信技术应当是无形的——它是在追求以人为本目标时的静默伙伴。我的工作遵循“负空间”原则，确保每一次增加都有其意义。
-        </p>
+        <h4 class="text-[10px] uppercase tracking-[0.3em] text-accent">前端开发</h4>
+        <div class="space-y-3">
+          <p class="text-lg font-serif italic text-text-main/80">React 19 / Next.js / Astro 6.1</p>
+          <p class="text-xs text-text-main/40 leading-relaxed uppercase tracking-widest">
+            擅长构建响应式、高性能的现代化 Web 应用，深谙内容层架构设计。
+          </p>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <h4 class="text-[10px] uppercase tracking-[0.3em] text-accent">视觉动效</h4>
+        <div class="space-y-3">
+          <p class="text-lg font-serif italic text-text-main/80">Three.js / GLSL / Framer Motion</p>
+          <p class="text-xs text-text-main/40 leading-relaxed uppercase tracking-widest">
+            探索 WebGL 的无限可能，致力于将物理动效与叙事逻辑完美结合。
+          </p>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <h4 class="text-[10px] uppercase tracking-[0.3em] text-accent">工程设计</h4>
+        <div class="space-y-3">
+          <p class="text-lg font-serif italic text-text-main/80">Tailwind 4.0 / Figma / Design System</p>
+          <p class="text-xs text-text-main/40 leading-relaxed uppercase tracking-widest">
+            从像素单位到色彩协议，构建严谨且具备美感的设计系统。
+          </p>
+        </div>
       </div>
     </div>
   </div>
+
 </div>
 
 <style>

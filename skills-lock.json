@@ -6,6 +6,16 @@
       "sourceType": "github",
       "computedHash": "3a70f9666e7b6a03efb939b7e62938f4d3a6a5d956b2cc3c10011fda6ba27e9b"
     },
+    "chinese-style-guide": {
+      "source": "rightcapitalhq/chinese-style-guide",
+      "sourceType": "github",
+      "computedHash": "85c6e9af60752fe8fd8399b6aaf6464937c484796e2fa7e86a75df2faaf8b192"
+    },
+    "chinese-writing": {
+      "source": "miantiao-me/aigc-weekly",
+      "sourceType": "github",
+      "computedHash": "ee49c347183f228a01fc951c7ca81324b1662712945186b955a307fe6f2f624c"
+    },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
