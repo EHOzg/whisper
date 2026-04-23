@@ -1,63 +1,74 @@
 import type { CollectionEntry } from 'astro:content';
-
-export interface GraphNode {
-  id: string;
-  name: string;
-  category: string;
-  val: number; // Node size
-  randomFactor: number; // For size/appearance entropy
-  phaseOffset: number; // For animation sync offsets
-}
-
-export interface GraphLink {
-  source: string;
-  target: string;
-}
+import type { Node, Edge } from '@xyflow/react';
 
 export interface GraphData {
-  nodes: GraphNode[];
-  links: GraphLink[];
+  nodes: Node[];
+  edges: Edge[];
 }
 
 export function generateGraphData(entries: CollectionEntry<'kb'>[]): GraphData {
-  const nodes: GraphNode[] = entries.map(entry => {
-    // Is it a "main" node? (Simplified: first in order)
+  const nodes: Node[] = [];
+  const edges: Edge[] = [];
+  
+  // Create a simple circular layout based on categories
+  const categories = [...new Set(entries.map(e => e.data.category))];
+  const radiusX = 400;
+  const radiusY = 300;
+  const centerX = 500;
+  const centerY = 400;
+
+  entries.forEach((entry, idx) => {
     const isMain = entry.data.order === 1;
-    return {
+    const catIndex = categories.indexOf(entry.data.category);
+    
+    // Group by category using angle
+    const angle = (catIndex / categories.length) * 2 * Math.PI + (idx * 0.2);
+    
+    // Initial deterministic positions before user moving
+    const x = centerX + Math.cos(angle) * (radiusX + (Math.random() * 50));
+    const y = centerY + Math.sin(angle) * (radiusY + (Math.random() * 50));
+
+    nodes.push({
       id: entry.id,
-      name: entry.data.title,
-      category: entry.data.category,
-      val: isMain ? 4 : 1.5 + Math.random() * 2,
-      randomFactor: Math.random(),
-      phaseOffset: Math.random() * Math.PI * 2
-    };
+      position: { x, y },
+      data: { 
+        label: entry.data.title,
+        category: entry.data.category,
+        isMain
+      },
+      type: 'customNode',
+    });
   });
 
-  const links: GraphLink[] = [];
-
   // Grouped logic: link entries within the same category
-  const categories = [...new Set(entries.map(e => e.data.category))];
   categories.forEach(cat => {
     const catEntries = entries.filter(e => e.data.category === cat);
     // Link to the next one in order to form a chain/category cluster
     for (let i = 0; i < catEntries.length - 1; i++) {
-        links.push({
+        edges.push({
+            id: `edge-${catEntries[i].id}-${catEntries[i+1].id}`,
             source: catEntries[i].id,
-            target: catEntries[i+1].id
+            target: catEntries[i+1].id,
+            animated: true,
+            style: { stroke: '#4b5563', strokeWidth: 1.5 },
         });
     }
   });
 
-  // Simple scan for cross-references in content (simplified placeholder for now)
-  // Real implementation could use a regex to scan for markdown links
+  // Simple scan for cross-references in content
   entries.forEach(entry => {
-    // If entry's description mentions another entry's title, link them
     entries.forEach(other => {
         if (entry.id !== other.id && entry.data.description.includes(other.data.title)) {
-            links.push({ source: entry.id, target: other.id });
+            edges.push({ 
+              id: `edge-ref-${entry.id}-${other.id}`,
+              source: entry.id, 
+              target: other.id,
+              animated: true,
+              style: { stroke: '#6366f1', strokeWidth: 1, strokeDasharray: '5,5' },
+            });
         }
     });
   });
 
-  return { nodes, links };
+  return { nodes, edges };
 }
