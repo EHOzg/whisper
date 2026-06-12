@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Handle, Position, useReactFlow } from '@xyflow/react';
-import { Trash2, Edit2, Check } from 'lucide-react';
+import { Trash2, Edit2, Check, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface CustomNodeProps {
@@ -84,7 +84,17 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ id, data }) => {
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <span className="text-sm tracking-widest">{label}</span>
+          {data.category ? (
+            <a 
+              href={`/kb/${id}`}
+              className="text-sm tracking-widest hover:text-accent hover:underline cursor-pointer transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {label}
+            </a>
+          ) : (
+            <span className="text-sm tracking-widest">{label}</span>
+          )}
           {data.category && !data.isMain && (
             <span className="text-[10px] text-text-main/50 uppercase mt-1">{data.category}</span>
           )}
@@ -93,6 +103,16 @@ export const CustomNode: React.FC<CustomNodeProps> = ({ id, data }) => {
 
       {/* Toolbar actions visible on hover */}
       <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-background/90 border border-text-main/10 rounded-lg p-1 shadow-md pointer-events-none group-hover:pointer-events-auto z-10 after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-4">
+        {data.category && (
+          <a 
+            href={`/kb/${id}`}
+            className="p-1.5 text-text-main/60 hover:text-accent hover:bg-accent/10 rounded-md transition-colors flex items-center justify-center"
+            title="查看文章 / Open Article"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <BookOpen size={12} />
+          </a>
+        )}
         <button 
           onClick={() => setIsEditing(true)}
           className="p-1.5 text-text-main/60 hover:text-accent hover:bg-accent/10 rounded-md transition-colors"

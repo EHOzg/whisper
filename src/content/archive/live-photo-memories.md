@@ -6,8 +6,6 @@ tags: ["摄影", "技术", "设计"]
 lang: "zh"
 ---
 
-import { LivePhoto } from '../../components/Common/LivePhoto';
-
 在一张静止的照片里，时间是被冻结的。但在 Live Photo 里，时间是在呼吸的。
 
 苹果推出的这个特性，捕捉了快门按下前后各 1.5 秒的瞬间。正是这 3 秒钟的流动，让原本平面的记忆变得立体——或是海浪拍打礁石的微响，或是风吹过树梢的律动，亦或是爱人转头时那抹未及散去的笑意。
@@ -15,16 +13,18 @@ import { LivePhoto } from '../../components/Common/LivePhoto';
 ### 瞬时的魅力
 
 在 Whisper 这个空间里，我一直在追求一种“静中带动”的生命感。Live Photo 完美契合了这种理念。它平时静默如迷，当你按下（或悬停）时，它便悄然苏醒，诉说那层被隐藏的故事。
-
 <div class="my-12">
-  <LivePhoto 
-    client:load
-    poster="/assets/live-photo/landscape.jpg"
-    src="/assets/live-photo/landscape.mp4"
-    alt="Ocean Waves Live Photo"
+  <video 
+    src="/assets/live-photo/landscape.mp4" 
+    poster="/assets/live-photo/landscape.jpg" 
+    autoplay 
+    loop 
+    muted 
+    playsinline 
+    class="w-full rounded-lg"
   />
   <p class="text-center text-[10px] uppercase tracking-[0.2em] text-accent mt-4">
-    交互：将鼠标悬停在上方照片或长按
+    自动循环播放的实况视频
   </p>
 </div>
 

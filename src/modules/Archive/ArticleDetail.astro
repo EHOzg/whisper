@@ -126,114 +126,149 @@ const jsonLd = {
 </script>
 
 <style is:global>
-  /* Book-like typography for the article content */
+  /* Premium typography for the article content */
   .prose-custom {
     color: var(--text-main);
     opacity: 0.9;
-    line-height: 1.7;
-    font-family: var(--font-serif);
-    font-size: 1.125rem;
+    line-height: 1.85;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    word-break: break-word;
   }
 
   @media (min-width: 768px) {
     .prose-custom {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
     }
   }
 
   .prose-custom p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.8em;
   }
 
   .prose-custom h2 {
     color: var(--text-main);
-    font-family: var(--font-serif);
-    font-size: 1.875rem; /* 3xl */
-    line-height: 2.25rem;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    letter-spacing: -0.025em;
+    font-family: var(--font-sans);
+    font-size: 1.75rem; /* 2xl-3xl */
+    line-height: 1.4;
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+    font-weight: 600;
   }
 
   @media (min-width: 768px) {
     .prose-custom h2 {
-      font-size: 2.25rem; /* 4xl */
+      font-size: 2rem;
     }
   }
 
   .prose-custom h3 {
     color: var(--text-main);
-    opacity: 0.8;
-    font-family: var(--font-serif);
-    font-size: 1.5rem; /* 2xl */
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.025em;
+    opacity: 0.95;
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    line-height: 1.4;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.02em;
+    font-weight: 600;
+  }
+
+  .prose-custom strong {
+    font-weight: 600;
+    color: var(--text-main);
+    opacity: 1;
   }
 
   .prose-custom blockquote {
-    padding-left: 2rem;
-    border-left: 1px solid color-mix(in srgb, var(--text-main), transparent 90%);
+    padding-left: 1.5rem;
+    border-left: 4px solid color-mix(in srgb, var(--accent), transparent 60%);
     color: var(--accent);
-    margin: 3rem 0;
+    background-color: color-mix(in srgb, var(--accent), transparent 95%);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-right: 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 2.5rem 0;
+    font-style: italic;
+  }
+
+  .prose-custom blockquote p:last-child {
+    margin-bottom: 0;
   }
 
   .prose-custom ul,
   .prose-custom ol {
-    margin-bottom: 0;
+    margin-bottom: 1.8em;
     padding-left: 1.5rem;
+    color: var(--text-main);
+  }
+
+  .prose-custom ul {
+    list-style-type: disc;
+  }
+
+  .prose-custom ol {
+    list-style-type: decimal;
   }
 
   .prose-custom li {
-    margin-bottom: 0;
+    margin-bottom: 0.5em;
     font-family: var(--font-sans);
     font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .prose-custom li::marker {
+    color: color-mix(in srgb, var(--text-main), transparent 50%);
   }
 
   .prose-custom a {
+    color: var(--text-main);
     text-decoration: underline;
-    text-underline-offset: 8px;
-    text-decoration-color: color-mix(
-      in srgb,
-      var(--text-main),
-      transparent 90%
-    );
-    transition: all 0.5s var(--ease-whisper);
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in srgb, var(--accent), transparent 40%);
+    text-decoration-thickness: 1.5px;
+    transition: all 0.3s var(--ease-whisper);
   }
 
   .prose-custom a:hover {
-    text-decoration-color: color-mix(
-      in srgb,
-      var(--text-main),
-      transparent 70%
-    );
+    text-decoration-color: var(--accent);
+    color: var(--accent);
   }
 
   .prose-custom hr {
-    margin: 4rem 0;
+    margin: 4rem auto;
     border: none;
     height: 1px;
-    background-color: color-mix(in srgb, var(--text-main), transparent 95%);
+    background-color: color-mix(in srgb, var(--text-main), transparent 90%);
+    width: 30%;
   }
 
   /* Code Blocks */
   .prose-custom pre {
-    margin: 4rem 0;
-    padding: 1.75rem 2rem;
+    margin: 2.5rem 0;
+    padding: 1.5rem 1.75rem;
     font-family:
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
       'Courier New', monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.7;
     overflow-x: auto;
-    border-top: 1px solid color-mix(in srgb, var(--text-main), transparent 95%);
-    border-bottom: 1px solid color-mix(in srgb, var(--text-main), transparent 95%);
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--border-muted), transparent 50%);
+    background: color-mix(in srgb, var(--bg-base), transparent 10%);
+    box-shadow: 0 4px 20px -10px color-mix(in srgb, var(--text-main), transparent 95%);
   }
 
   @media (max-width: 768px) {
     .prose-custom pre {
       padding: 1.25rem 1.5rem;
-      margin: 2.5rem -1.5rem;
+      margin: 2rem -1.5rem;
       border-radius: 0;
       border-left: none;
       border-right: none;
@@ -245,10 +280,10 @@ const jsonLd = {
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
       'Courier New', monospace;
     font-size: 0.85em;
-    background: color-mix(in srgb, var(--accent), transparent 92%);
+    background: color-mix(in srgb, var(--accent), transparent 90%);
     color: var(--accent);
     padding: 0.2em 0.4em;
-    border-radius: 0.4em;
+    border-radius: 0.3em;
   }
 
   .prose-custom pre code {

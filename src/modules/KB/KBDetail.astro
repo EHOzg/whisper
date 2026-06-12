@@ -1,7 +1,7 @@
 ---
 import { render, type CollectionEntry, getCollection } from 'astro:content';
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
 // Get related entries in the same category
 const allKB = await getCollection('kb');
@@ -12,7 +12,7 @@ const relatedEntries = allKB
 const categorySlug = entry.data.category.toLowerCase().replace(/\s+/g, '-');
 ---
 
-<div class="max-w-7xl mx-auto px-6 py-32 md:py-48 flex flex-col lg:flex-row gap-16">
+<div class="max-w-[90rem] mx-auto px-6 py-32 md:py-48 flex flex-col lg:flex-row gap-12 xl:gap-16">
   <!-- Sidebar Navigation -->
   <aside class="w-full lg:w-64 flex-shrink-0">
     <div class="sticky top-32">
@@ -65,7 +65,64 @@ const categorySlug = entry.data.category.toLowerCase().replace(/\s+/g, '-');
       <Content />
     </div>
   </article>
+
+  <!-- Table of Contents (Right Sidebar) -->
+  {headings && headings.filter(h => h.depth === 2 || h.depth === 3).length > 0 && (
+    <aside class="hidden xl:block w-64 flex-shrink-0">
+      <div class="sticky top-32 max-h-[calc(100vh-16rem)] overflow-y-auto pr-2 scrollbar-thin">
+        <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-6 opacity-50">目录</h4>
+        <nav class="flex flex-col gap-3 border-l border-text-main/5 pl-4">
+          {headings
+            .filter(h => h.depth === 2 || h.depth === 3)
+            .map(heading => (
+              <a 
+                href={`#${heading.slug}`}
+                class={`toc-link text-xs text-text-muted hover:text-accent transition-colors duration-300 block leading-relaxed ${
+                  heading.depth === 3 ? 'pl-4 opacity-75 text-[11px]' : 'font-medium'
+                }`}
+              >
+                {heading.text}
+              </a>
+            ))}
+        </nav>
+      </div>
+    </aside>
+  )}
 </div>
+
+<script>
+  // Active Table of Contents highlighting
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -60% 0px',
+    threshold: 0
+  };
+
+  const headings = document.querySelectorAll('.prose-kb h2, .prose-kb h3');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        if (!id) return;
+        
+        tocLinks.forEach((link) => {
+          const href = link.getAttribute('href');
+          if (href === `#${id}`) {
+            link.classList.add('text-accent', 'font-medium');
+            link.classList.remove('text-text-muted');
+          } else {
+            link.classList.remove('text-accent', 'font-medium');
+            link.classList.add('text-text-muted');
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  headings.forEach((heading) => observer.observe(heading));
+</script>
 
 <style is:global>
   .prose-kb {

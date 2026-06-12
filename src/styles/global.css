@@ -47,8 +47,8 @@
   --color-whisper-glow: hsl(var(--whisper-glow));
   --color-border-muted: hsl(var(--border-muted));
 
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
+  --font-serif: "Playfair Display", "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-typewriter: "Special Elite", system-ui, monospace;
   
   --ease-whisper: var(--ease-whisper);
