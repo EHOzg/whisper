@@ -2,7 +2,7 @@
 import { render, type CollectionEntry } from 'astro:content'
 import { GiscusComments } from '../../components/Comments/Giscus'
 const { post } = Astro.props
-const { Content } = await render(post)
+const { Content, headings } = await render(post)
 
 // Structured Data (JSON-LD)
 const jsonLd = {
@@ -32,63 +32,88 @@ const jsonLd = {
 
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-<article class="max-w-3xl mx-auto px-6 py-32 md:py-48">
-  <!-- Header -->
-  <header class="mb-24 space-y-8">
-    <div
-      class="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-accent font-sans whisper-fade-in"
-      style="animation-delay: 100ms;">
-      <time datetime={post.data.pubDate.toISOString()}>
+<div class="max-w-[90rem] mx-auto px-6 py-32 md:py-48 flex flex-col lg:flex-row gap-12 xl:gap-16 justify-center">
+  <article class="flex-grow max-w-3xl">
+    <!-- Header -->
+    <header class="mb-24 space-y-8">
+      <div
+        class="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-accent font-sans whisper-fade-in"
+        style="animation-delay: 100ms;">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {
+            post.data.pubDate.toLocaleDateString('zh-CN', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          }
+        </time>
         {
-          post.data.pubDate.toLocaleDateString('zh-CN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })
+          post.data.tags && post.data.tags.length > 0 && (
+            <>
+              <span class="w-1 h-[1px] bg-accent/30" />
+              <div class="flex gap-4">
+                {post.data.tags.map((tag: string) => (
+                  <span>{tag}</span>
+                ))}
+              </div>
+            </>
+          )
         }
-      </time>
-      {
-        post.data.tags && post.data.tags.length > 0 && (
-          <>
-            <span class="w-1 h-[1px] bg-accent/30" />
-            <div class="flex gap-4">
-              {post.data.tags.map((tag: string) => (
-                <span>{tag}</span>
-              ))}
-            </div>
-          </>
-        )
-      }
+      </div>
+
+      <h1
+        class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in"
+        style="animation-delay: 300ms;">
+        {post.data.title}
+      </h1>
+
+      <p
+        class="text-xl md:text-2xl text-accent font-serif max-w-2xl leading-relaxed whisper-fade-in"
+        style="animation-delay: 500ms;">
+        {post.data.description}
+      </p>
+
+      <div
+        class="w-16 h-[1px] bg-text-main/10 pt-8 whisper-fade-in"
+        style="animation-delay: 700ms;">
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="prose-custom whisper-fade-in" style="animation-delay: 900ms;">
+      <Content />
     </div>
 
-    <h1
-      class="text-4xl md:text-6xl tracking-tight leading-tight whisper-fade-in"
-      style="animation-delay: 300ms;">
-      {post.data.title}
-    </h1>
-
-    <p
-      class="text-xl md:text-2xl text-accent font-serif max-w-2xl leading-relaxed whisper-fade-in"
-      style="animation-delay: 500ms;">
-      {post.data.description}
-    </p>
-
-    <div
-      class="w-16 h-[1px] bg-text-main/10 pt-8 whisper-fade-in"
-      style="animation-delay: 700ms;">
+    <!-- Comments Section -->
+    <div class="whisper-fade-in" style="animation-delay: 1200ms;">
+      <GiscusComments client:only="react" />
     </div>
-  </header>
+  </article>
 
-  <!-- Content -->
-  <div class="prose-custom whisper-fade-in" style="animation-delay: 900ms;">
-    <Content />
-  </div>
-
-  <!-- Comments Section -->
-  <div class="whisper-fade-in" style="animation-delay: 1200ms;">
-    <GiscusComments client:only="react" />
-  </div>
-</article>
+  <!-- Table of Contents (Right Sidebar) -->
+  {headings && headings.filter(h => h.depth === 2 || h.depth === 3).length > 0 && (
+    <aside class="hidden xl:block w-64 flex-shrink-0">
+      <div class="sticky top-32 max-h-[calc(100vh-16rem)] overflow-y-auto pr-2 scrollbar-thin">
+        <h4 class="text-[10px] uppercase tracking-[0.3em] text-text-muted mb-6 opacity-50">目录</h4>
+        <nav class="flex flex-col gap-3 border-l border-text-main/5 pl-4">
+          {headings
+            .filter(h => h.depth === 2 || h.depth === 3)
+            .map(heading => (
+              <a 
+                href={`#${heading.slug}`}
+                class={`toc-link text-xs text-text-muted hover:text-accent transition-colors duration-300 block leading-relaxed ${
+                  heading.depth === 3 ? 'pl-4 opacity-75 text-[11px]' : 'font-medium'
+                }`}
+              >
+                {heading.text}
+              </a>
+            ))}
+        </nav>
+      </div>
+    </aside>
+  )}
+</div>
 
 <!-- Immersive Reader UI Elements -->
 <div
@@ -123,6 +148,38 @@ const jsonLd = {
       `${warmth} ${saturation}% ${lightness}%`,
     )
   })
+
+  // Active Table of Contents highlighting
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -60% 0px',
+    threshold: 0
+  };
+
+  const headings = document.querySelectorAll('.prose-custom h2, .prose-custom h3');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        if (!id) return;
+        
+        tocLinks.forEach((link) => {
+          const href = link.getAttribute('href');
+          if (href === `#${id}`) {
+            link.classList.add('text-accent', 'font-medium');
+            link.classList.remove('text-text-muted');
+          } else {
+            link.classList.remove('text-accent', 'font-medium');
+            link.classList.add('text-text-muted');
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  headings.forEach((heading) => observer.observe(heading));
 </script>
 
 <style is:global>
